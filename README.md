@@ -9,3 +9,6 @@
 ```
 sudo npm install
 ```
+
+## Main page
+https://daring-board.github.io/Altair/www/
