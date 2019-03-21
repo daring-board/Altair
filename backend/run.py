@@ -3,14 +3,14 @@ from random import *
 from flask_cors import CORS 
 
 app = Flask(__name__,
-            static_folder = "../dist/static",
+            static_folder = "../dist",
             template_folder = "../dist")
 CORS(app)
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def catch_all(path):
-    return render_template("index.html")
+# @app.route('/', defaults={'path': ''})
+# @app.route('/<path:path>')
+# def catch_all(path):
+#     return render_template("index.html")
 
 @app.route('/api/random')
 def random_number():
