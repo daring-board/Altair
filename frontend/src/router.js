@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import Manage from './views/Manage.vue'
 import Calender from './views/Calender.vue'
 
 Vue.use(Router)
@@ -13,13 +14,15 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
-    },
-    {
+    },{
+      path: '/manage',
+      name: 'manage',
+      component: Manage
+    },{
       path: '/calender',
       name: 'calender',
       component: Calender
-    },
-    {
+    },{
       path: '/about',
       name: 'about',
       // route level code-splitting
