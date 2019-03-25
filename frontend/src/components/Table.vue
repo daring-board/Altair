@@ -2,7 +2,7 @@
   <div>
     <b-table striped hover :items="members" :fields="fields">
       <template slot="name" slot-scope="data">
-        <a :href="`/manage`">{{ data.value }}</a>
+        <router-link v-bind:to="{ name : 'manage', params : { id: data.item.id }}">{{ data.value }}</router-link>
       </template>
     </b-table>
   </div>
@@ -24,7 +24,7 @@
     },
     methods: {
       getMembers() {
-        const path = `http://localhost:5000/api/members`
+        const path = this.$baseURL + `members`
         axios.get(path)
           .then(response => {
             this.members = response.data

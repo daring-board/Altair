@@ -15,9 +15,10 @@ export default new Router({
       name: 'home',
       component: Home
     },{
-      path: '/manage',
+      path: '/manage/:id',
       name: 'manage',
-      component: Manage
+      component: Manage,
+      props: true
     },{
       path: '/calender',
       name: 'calender',

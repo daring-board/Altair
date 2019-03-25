@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import BootstrapVue from 'bootstrap-vue'
 
+Vue.prototype.$baseURL = 'http://localhost:5000/api/'
 Vue.use(BootstrapVue)
 
 import 'bootstrap/dist/css/bootstrap.css'
