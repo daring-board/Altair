@@ -21,12 +21,12 @@ class Members(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column('name', String(255), index=True, unique=True)
     application = Column('application', DATETIME, default=datetime.now, nullable=True)
-    winning = Column('winning', DATETIME, default=datetime.now, nullable=True)
+    winning = Column('winning', DATETIME, nullable=True)
     created = Column('created', DATETIME, default=datetime.now, nullable=False)
-    modified = Column('modified', DATETIME, default=datetime.now, nullable=True)
+    modified = Column('modified', DATETIME, nullable=True)
 
     #初期化
-    def __init__(name):
+    def __init__(self, name):
         self.name = name
         self.created = datetime.now()
 
@@ -38,10 +38,10 @@ class Concerts(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column('name', String(255), index=True, unique=True)
     created = Column('created', DATETIME, default=datetime.now, nullable=False)
-    modified = Column('modified', DATETIME, default=datetime.now, nullable=True)
+    modified = Column('modified', DATETIME, nullable=True)
 
     #初期化
-    def __init__(name):
+    def __init__(self, name):
         self.name = name
         self.created = datetime.now()
 
@@ -56,10 +56,10 @@ class Tickets(db.Model):
     priority = Column('priority', Integer, nullable=False)
     status = Column('status', String(255), nullable=False)
     created = Column('created', DATETIME, default=datetime.now, nullable=False)
-    modified = Column('modified', DATETIME, default=datetime.now, nullable=True)
+    modified = Column('modified', DATETIME, nullable=True)
 
     #初期化
-    def __init__(member_id, concert_id, priority, status):
+    def __init__(self, member_id, concert_id, priority, status):
         self.member_id = member_id
         self.concert_id = concert_id
         self.priority = priority

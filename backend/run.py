@@ -1,6 +1,7 @@
-from flask import Flask, render_template, jsonify, make_response
+from flask import Flask, render_template, request, jsonify, make_response
 from flask_cors import CORS
 from models import db, Members, Concerts, Tickets, get_model_dict
+import json
 
 app = Flask(__name__,
             static_folder = "../frontend/dist",
@@ -32,7 +33,17 @@ def members():
 
 @app.route('/api/member/<id>')
 def member(id):
-    member = Members.query.filter(Members.id==id).first()
+    member = Members.query.filter_by(id=id).first()
+    return jsonify(get_model_dict(member))
+
+@app.route('/api/regist_member', methods=["POST"])
+def regist_member():
+    print(request.data.decode('utf-8'))
+    data = request.data.decode('utf-8')
+    name = json.loads(data)['name']
+    member = Members(name)
+    db.session.add(member)
+    db.session.commit()
     return jsonify(get_model_dict(member))
 
 @app.errorhandler(404)
