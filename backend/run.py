@@ -1,11 +1,10 @@
 from flask import Flask, render_template, jsonify, make_response
-from random import *
 from flask_cors import CORS
 from models import db, Members, Concerts, Tickets, get_model_dict
 
 app = Flask(__name__,
-            static_folder = "../dist",
-            template_folder = "../dist")
+            static_folder = "../frontend/dist",
+            template_folder = "../frontend/dist")
 CORS(app)
 
 app.config['DEBUG'] = True
@@ -20,17 +19,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db.init_app(app)
 db.app = app
 
-# @app.route('/', defaults={'path': ''})
-# @app.route('/<path:path>')
-# def catch_all(path):
-#     return render_template("index.html")
-
-@app.route('/api/random')
-def random_number():
-    response = {
-        'randomNumber': randint(1, 100)
-    }
-    return jsonify(response)
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return render_template("index.html")
 
 @app.route('/api/members')
 def members():
