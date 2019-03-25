@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Manage from './views/Manage.vue'
 import Calender from './views/Calender.vue'
+import New from './views/New.vue'
 import About from './views/About.vue'
 
 Vue.use(Router)
@@ -24,6 +25,10 @@ export default new Router({
       path: '/calender',
       name: 'calender',
       component: Calender
+    },{
+      path: '/new',
+      name: 'new',
+      component: New
     },{
       path: '/about',
       name: 'about',

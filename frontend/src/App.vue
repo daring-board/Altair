@@ -12,6 +12,9 @@
             <router-link class="nav-link" to="/calender">Calender</router-link>
           </b-nav-item>
           <b-nav-item>
+            <router-link class="nav-link" to="/new">New</router-link>
+          </b-nav-item>
+          <b-nav-item>
             <router-link class="nav-link" to="/about">About</router-link>
           </b-nav-item>
         </b-navbar-nav>
