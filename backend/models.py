@@ -36,13 +36,17 @@ class Concerts(db.Model):
     """
     __tablename__ = "concerts"
     id = Column(Integer, primary_key=True)
-    name = Column('name', String(255), index=True, unique=True)
+    name = Column('name', String(255), index=True)
+    place = Column('place', String(255), nullable=False)
+    date = Column('date', DATETIME, nullable=False)
     created = Column('created', DATETIME, default=datetime.now, nullable=False)
     modified = Column('modified', DATETIME, nullable=True)
 
     #初期化
-    def __init__(self, name):
+    def __init__(self, name, place, date):
         self.name = name
+        self.place = place
+        self.date = date
         self.created = datetime.now()
 
 class Tickets(db.Model):
