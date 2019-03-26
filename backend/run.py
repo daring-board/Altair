@@ -46,6 +46,16 @@ def regist_member():
     db.session.commit()
     return jsonify(get_model_dict(member))
 
+@app.route('/api/regist_concert', methods=["POST"])
+def regist_concert():
+    print(request.data.decode('utf-8'))
+    data = request.data.decode('utf-8')
+    data = json.loads(data)['concert']
+    concert = Concerts(data['name'], data['place'], data['date'])
+    db.session.add(concert)
+    db.session.commit()
+    return jsonify(get_model_dict(concert))
+
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)

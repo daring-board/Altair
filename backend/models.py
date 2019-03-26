@@ -19,7 +19,7 @@ class Members(db.Model):
     """
     __tablename__ = "members"
     id = Column(Integer, primary_key=True)
-    name = Column('name', String(255), index=True, unique=True)
+    name = Column('name', String(255), index=True, nullable=False)
     application = Column('application', DATETIME, default=datetime.now, nullable=True)
     winning = Column('winning', DATETIME, nullable=True)
     created = Column('created', DATETIME, default=datetime.now, nullable=False)
@@ -36,7 +36,7 @@ class Concerts(db.Model):
     """
     __tablename__ = "concerts"
     id = Column(Integer, primary_key=True)
-    name = Column('name', String(255), index=True)
+    name = Column('name', String(255), nullable=False)
     place = Column('place', String(255), nullable=False)
     date = Column('date', DATETIME, nullable=False)
     created = Column('created', DATETIME, default=datetime.now, nullable=False)
@@ -46,7 +46,7 @@ class Concerts(db.Model):
     def __init__(self, name, place, date):
         self.name = name
         self.place = place
-        self.date = date
+        self.date = datetime.now()
         self.created = datetime.now()
 
 class Tickets(db.Model):
