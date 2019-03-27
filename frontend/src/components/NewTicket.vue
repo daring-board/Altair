@@ -41,7 +41,7 @@
           .then(response => {
             /* eslint-disable */
             console.log(response.data)
-            flag = true
+            this.flag = true
         })
       },
       getMembers(){
