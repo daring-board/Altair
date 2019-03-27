@@ -2,17 +2,17 @@
   <div>
     <b-card header="Create New Event">
       <label for="name">Name</label>
-      <b-input id="name" aria-describedby="name-help" v-model="event.name"/>
+      <b-input id="name" aria-describedby="name-help" required v-model="event.name"/>
       <b-form-text id="name-help">
         Enter the event name in the upper area. 
       </b-form-text>
       <label for="date">Date</label>
-      <datepicker class="text-center" id="date" aria-describedby="date-help" v-model="event.date"></datepicker>
+      <datepicker class="text-center" id="date" aria-describedby="date-help" required v-model="event.date"></datepicker>
       <b-form-text id="date-help">
         Enter the event date in the upper area. 
       </b-form-text>
       <label for="place">Place</label>
-      <b-input id="place" aria-describedby="place-help" v-model="event.place"/>
+      <b-input id="place" aria-describedby="place-help" required v-model="event.place"/>
       <b-form-text id="place-help">
         Enter the event place in the upper area. 
       </b-form-text>
@@ -45,7 +45,7 @@
           .then(response => {
             /* eslint-disable */
             console.log(response.data)
-            this.$router.push({name: 'home'})
+            this.$emit('success', 'Eventを保存しました。')
         })
       }
     }

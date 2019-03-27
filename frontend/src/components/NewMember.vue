@@ -2,7 +2,7 @@
   <div>
     <b-card header="Create New Member">
       <label for="member-name">Name</label>
-      <b-form-input id="member-name" aria-describedby="member-name-help" v-model="member_name"/>
+      <b-form-input id="member-name" aria-describedby="member-name-help" required v-model="member_name"/>
       <b-form-text id="member-name-help">
         Input name of new member, and push following button. 
       </b-form-text>
@@ -27,7 +27,7 @@
           .then(response => {
             /* eslint-disable */
             console.log(response.data)
-            this.$router.push({name: 'home'})
+            this.$emit('success', 'Memberを保存しました。')
         })
       }
     }

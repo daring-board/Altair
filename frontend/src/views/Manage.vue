@@ -1,7 +1,7 @@
 <template>
   <div class="manage">
     <h2 style="margin-top: 10px">{{ member.name }}</h2>
-    <Event/>
+    <Event :member_id='id'/>
   </div>
 </template>
 
@@ -17,7 +17,7 @@ export default {
   },
   data: function() {
     return {
-      member: {'name': 'No name'}
+      member: {'name': 'No name'},
     }
   },
   props: ['id'],

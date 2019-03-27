@@ -46,6 +46,17 @@ def regist_member():
     db.session.commit()
     return jsonify(get_model_dict(member))
 
+@app.route('/api/concerts')
+def concerts():
+    concerts = Concerts.query.all()
+    concerts = [get_model_dict(concert) for concert in concerts]
+    return jsonify(concerts)
+
+@app.route('/api/concert/<id>')
+def concert(id):
+    concert = Concerts.query.filter_by(id=id).first()
+    return jsonify(get_model_dict(concert))
+
 @app.route('/api/regist_concert', methods=["POST"])
 def regist_concert():
     print(request.data.decode('utf-8'))
@@ -55,6 +66,34 @@ def regist_concert():
     db.session.add(concert)
     db.session.commit()
     return jsonify(get_model_dict(concert))
+
+@app.route('/api/ticket/<member_id>')
+def ticket(member_id):
+    tickets = Tickets.query.filter_by(member_id=member_id).all()
+    tickets = [get_model_dict(ticket) for ticket in tickets]
+    ret = {}
+    for ticket in tickets:
+        concert_id = ticket['concert_id']
+        obj = {}
+        obj['ID'] = ticket['id']
+        obj['date'] = ticket['created']
+        obj['num'] = ticket['priority']
+        obj['status'] = ticket['status']
+        if concert_id in ret.keys():
+            ret[concert_id].append(obj) 
+        else:
+            ret[concert_id] = [obj]
+    return jsonify(ret)
+
+@app.route('/api/regist_ticket', methods=["POST"])
+def regist_ticket():
+    print(request.data.decode('utf-8'))
+    data = request.data.decode('utf-8')
+    data = json.loads(data)['ticket']
+    ticket = Tickets(data['member']['id'], data['event']['id'], 1, 'Applyed')
+    db.session.add(ticket)
+    db.session.commit()
+    return jsonify(get_model_dict(ticket))
 
 @app.errorhandler(404)
 def not_found(error):
