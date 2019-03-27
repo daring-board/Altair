@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="flag">
+      <b-alert variant="success" show>Eventを保存しました。</b-alert>
+    </div>
     <b-card header="Create New Event">
       <label for="name">Name</label>
       <b-input id="name" aria-describedby="name-help" required v-model="event.name"/>
@@ -32,7 +35,8 @@
           name: null,
           date: null,
           place: null
-        }
+        },
+        flag: false
       }
     },
     components: {
@@ -45,7 +49,7 @@
           .then(response => {
             /* eslint-disable */
             console.log(response.data)
-            this.$emit('success', 'Eventを保存しました。')
+            flag = true
         })
       }
     }

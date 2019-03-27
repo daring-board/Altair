@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="flag">
+      <b-alert variant="success" show>チケットを保存しました。</b-alert>
+    </div>
     <b-card header="Create New Ticket">
       <label for="select-event">Event Name</label>
       <b-form-select id="select-event" aria-describedby="event-help" :options="e_options" required v-model="form.event" />
@@ -27,7 +30,8 @@
         form: {
           event: null,
           member: null,
-        }
+        },
+        flag: false
       }
     },
     methods: {
@@ -37,7 +41,7 @@
           .then(response => {
             /* eslint-disable */
             console.log(response.data)
-            this.$emit('success', 'チケットを保存しました。')
+            flag = true
         })
       },
       getMembers(){

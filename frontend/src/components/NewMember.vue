@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="flag">
+      <b-alert variant="success" show>Memberを保存しました。</b-alert>
+    </div>
     <b-card header="Create New Member">
       <label for="member-name">Name</label>
       <b-form-input id="member-name" aria-describedby="member-name-help" required v-model="member_name"/>
@@ -17,7 +20,8 @@
   export default {
     data() {
       return {
-        member_name: null
+        member_name: null,
+        flag: false
       }
     },
     methods: {
@@ -27,7 +31,7 @@
           .then(response => {
             /* eslint-disable */
             console.log(response.data)
-            this.$emit('success', 'Memberを保存しました。')
+            flag = true
         })
       }
     }

@@ -1,15 +1,12 @@
 <template>
   <div class="new">
-    <div v-if="flag">
-      <b-alert variant="success" show>{{message}}</b-alert>
-    </div>
     <b-container>
       <br/>
-      <NewMember @success="on_success"/>
+      <NewMember/>
       <br/>
-      <NewEvent @success="on_success"/>
+      <NewEvent/>
       <br/>
-      <NewTicket @success="on_success"/>
+      <NewTicket/>
     </b-container>
   </div>
 </template>
@@ -26,18 +23,5 @@ export default {
     NewEvent,
     NewTicket
   },
-  data: function() {
-    return {
-      flag: false,
-      message: ''
-    }
-  },
-  methods: {
-    on_success(message){
-      this.flag = true
-      this.message = message
-
-    }
-  }
 }
 </script>
