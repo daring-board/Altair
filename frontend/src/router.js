@@ -5,6 +5,7 @@ import Manage from './views/Manage.vue'
 import Calender from './views/Calender.vue'
 import New from './views/New.vue'
 import About from './views/About.vue'
+import Login from './views/Login.vue'
 
 Vue.use(Router)
 
@@ -15,24 +16,34 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      meta: { requiresAuth: true }
     },{
       path: '/manage/:id',
       name: 'manage',
       component: Manage,
-      props: true
+      props: true,
+      meta: { requiresAuth: true }
     },{
       path: '/calender',
       name: 'calender',
-      component: Calender
+      component: Calender,
+      meta: { requiresAuth: true }
     },{
       path: '/new',
       name: 'new',
-      component: New
+      component: New,
+      meta: { requiresAuth: true }
     },{
       path: '/about',
       name: 'about',
+      meta: { isPublic: true },
       component: About
+    },{
+      path: '/login',
+      name: 'login',
+      meta: { isPublic: true },
+      component: Login
     }
   ]
 })

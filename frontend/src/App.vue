@@ -17,12 +17,32 @@
           <b-nav-item>
             <router-link class="nav-link" to="/about">About</router-link>
           </b-nav-item>
+          <b-nav-item>
+            <router-link @click="logout()" v-if="$store.getters.loggedIn" class="nav-link" to="/login">Login</router-link>
+          </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
     <router-view/>
+    <div v-if="$route.query.message">ログイン認証が必要なページです。</div>
   </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    logout () {
+      this.$store.commit('setUserId', '')
+      if (this.$route.meta.requiresAuth) {
+        this.$router.push({
+          path: '/login',
+          query: { redirect: this.$route.fullPath }
+        })
+      }
+    }
+  }
+}
+</script>
 
 <style>
 #app {
