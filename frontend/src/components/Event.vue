@@ -2,7 +2,7 @@
   <div>
     <div v-for="concert in concerts" v-bind:key="concert.id">
       <h3 style='text-align: left; margin-left: 10px'>{{concert.name}}</h3>
-      <b-table striped hover :items="tickets[concert.id]" :fields="fields">
+      <b-table striped hover :items="schedules[concert.id]" :fields="fields">
       </b-table>
     </div>
   </div>
@@ -16,7 +16,7 @@
       return {
         // Note `isActive` is left out and will not appear in the rendered table
         fields: [
-          {key: 'ID', label: 'No'},
+          {key: 'place', label: '場所'},
           {key: 'date', label: '日時'},
           {key: 'num', label: '枚数', 
             formatter: value => {return `${value}枚`}
@@ -24,7 +24,7 @@
           {key: 'status', label: 'ステータス'},
         ],
         concerts: null,
-        tickets: null
+        schedules: null,
       }
     },
     props: ['member_id'],
@@ -39,22 +39,20 @@
             console.log(this.concerts)
         })
       },
-      getTickets: function() {
-        console.log(this.member_id)
-        const path = this.$baseURL + `ticket/` + this.member_id
+      getSchedules: function() {
+        const path = this.$baseURL + `dict_schedules/` + this.member_id
         axios.get(path)
           .then(response => {
-            this.tickets = response.data
+            this.schedules = response.data
             /* eslint-disable */
-            console.log('Tickets')
-            console.log(this.tickets)
-
+            console.log('Schedules')
+            console.log(this.schedules)
             this.getConcerts()
         })
-      }
+      },
     },
-    created: function() {
-      this.getTickets()
+    mounted: function() {
+      this.getSchedules()
     }
   }
 

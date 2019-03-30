@@ -6,6 +6,8 @@
       <br/>
       <NewEvent/>
       <br/>
+      <NewSchedule/>
+      <br/>
       <NewTicket/>
     </b-container>
   </div>
@@ -14,6 +16,7 @@
 <script>
 import NewMember from '@/components/NewMember.vue'
 import NewEvent from '@/components/NewEvent.vue'
+import NewSchedule from '@/components/NewSchedule.vue'
 import NewTicket from '@/components/NewTicket.vue'
 
 export default {
@@ -21,7 +24,8 @@ export default {
   components: {
     NewMember,
     NewEvent,
-    NewTicket
+    NewTicket,
+    NewSchedule
   },
 }
 </script>

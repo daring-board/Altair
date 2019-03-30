@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify, make_response
 from flask_cors import CORS
-from models import db, Members, Concerts, Tickets, get_model_dict
+from models import db, Members, Concerts, Tickets, Schedules, get_model_dict
 import json
 
 app = Flask(__name__,
@@ -62,27 +62,69 @@ def regist_concert():
     print(request.data.decode('utf-8'))
     data = request.data.decode('utf-8')
     data = json.loads(data)['concert']
-    concert = Concerts(data['name'], data['place'], data['date'])
+    concert = Concerts(data['name'])
     db.session.add(concert)
     db.session.commit()
     return jsonify(get_model_dict(concert))
 
-@app.route('/api/ticket/<member_id>')
-def ticket(member_id):
-    tickets = Tickets.query.filter_by(member_id=member_id).all()
-    tickets = [get_model_dict(ticket) for ticket in tickets]
+@app.route('/api/schedules')
+def schedules():
+    schedules = Schedules.query.all()
+    schedules = [get_model_dict(schedule) for schedule in schedules]
+    return jsonify(schedules)
+
+@app.route('/api/dict_schedules/<member_id>')
+def dict_schedules(member_id):
+    schedules = Schedules.query.all()
+    schedules = [get_model_dict(schedule) for schedule in schedules]
+    print(schedules)
     ret = {}
-    for ticket in tickets:
-        concert_id = ticket['concert_id']
+    for schedule in schedules:
+        concert_id = schedule['concert_id']
+        ticket = Tickets.query.filter_by(member_id=member_id, schedule_id=schedule['id']).first()
         obj = {}
-        obj['ID'] = ticket['id']
-        obj['date'] = ticket['created']
-        obj['num'] = ticket['priority']
-        obj['status'] = ticket['status']
+        obj['date'] = '%s %s'%(schedule['date'], schedule['time'])
+        obj['place'] = schedule['place']
+        if ticket is None: continue
+        obj['status'] = ticket.status
+        obj['num'] = ticket.number
         if concert_id in ret.keys():
             ret[concert_id].append(obj) 
         else:
             ret[concert_id] = [obj]
+    print(ret)
+    return jsonify(ret)
+
+@app.route('/api/regist_schedule', methods=["POST"])
+def regist_scheule():
+    print(request.data.decode('utf-8'))
+    data = request.data.decode('utf-8')
+    data = json.loads(data)['schedule']
+    schedule = Schedules(data['concert']['id'], data['date'], data['time'], data['place'])
+    db.session.add(schedule)
+    db.session.commit()
+    return jsonify(get_model_dict(schedule))
+
+@app.route('/api/ticket', methods=['POST'])
+def ticket():
+    data = request.data.decode('utf-8')
+    print(data)
+    data = json.loads(data)
+    member_id = data['member_id']
+    schedule_id = data['schedule_id']
+    tickets = Tickets.query.filter_by(member_id=member_id, schedule_id=schedule_id).all()
+    tickets = [get_model_dict(ticket) for ticket in tickets]
+    ret = {}
+    for ticket in tickets:
+        schedule_id = ticket['schedule_id']
+        obj = {}
+        obj['ID'] = ticket['id']
+        obj['date'] = ticket['created']
+        obj['status'] = ticket['status']
+        if schedule_id in ret.keys():
+            ret[schedule_id].append(obj) 
+        else:
+            ret[schedule_id] = [obj]
     return jsonify(ret)
 
 @app.route('/api/regist_ticket', methods=["POST"])
@@ -90,7 +132,7 @@ def regist_ticket():
     print(request.data.decode('utf-8'))
     data = request.data.decode('utf-8')
     data = json.loads(data)['ticket']
-    ticket = Tickets(data['member']['id'], data['event']['id'], 1, 'Applyed')
+    ticket = Tickets(data['member']['id'], data['schedule']['id'], 'Applyed', data['number'])
     db.session.add(ticket)
     db.session.commit()
     return jsonify(get_model_dict(ticket))

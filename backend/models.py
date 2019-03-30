@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String, DATETIME, ForeignKey
+from sqlalchemy import Column, Integer, String, DATETIME, ForeignKey, Time
 from sqlalchemy.orm import relationship, backref
-from datetime import datetime
+from datetime import datetime, time
 
 db = SQLAlchemy()
 
@@ -9,8 +9,10 @@ def get_model_dict(model):
     tmp = dict((column.name, getattr(model, column.name)) 
                 for column in model.__table__.columns)
     for key in tmp.keys():
-        if not isinstance(tmp[key], datetime): continue
-        tmp[key] = tmp[key].strftime('%Y/%m/%d')    
+        if isinstance(tmp[key], datetime):
+            tmp[key] = tmp[key].strftime('%Y/%m/%d')
+        if isinstance(tmp[key], time):
+            tmp[key] = tmp[key].strftime('%H:%M:%S')
     return tmp
 
 class Members(db.Model):
@@ -37,16 +39,33 @@ class Concerts(db.Model):
     __tablename__ = "concerts"
     id = Column(Integer, primary_key=True)
     name = Column('name', String(255), nullable=False)
-    place = Column('place', String(255), nullable=False)
-    date = Column('date', DATETIME, nullable=False)
     created = Column('created', DATETIME, default=datetime.now, nullable=False)
     modified = Column('modified', DATETIME, nullable=True)
 
     #初期化
-    def __init__(self, name, place, date):
+    def __init__(self, name):
         self.name = name
+        self.created = datetime.now()
+
+class Schedules(db.Model):
+    """
+    日時モデル
+    """
+    __tablename__ = "schedules"
+    id = Column(Integer, primary_key=True)
+    concert_id = Column('concert_id', Integer, ForeignKey('concerts.id'), index=True, nullable=False)
+    date = Column('date', DATETIME, nullable=False)
+    time = Column('time', Time, nullable=False)
+    place = Column('place', String(255), nullable=False)
+    created = Column('created', DATETIME, default=datetime.now, nullable=False)
+    modified = Column('modified', DATETIME, nullable=True)
+
+    #初期化
+    def __init__(self, concert_id, date, time, place):
+        self.concert_id = concert_id
+        self.date = date
+        self.time = time
         self.place = place
-        self.date = datetime.now()
         self.created = datetime.now()
 
 class Tickets(db.Model):
@@ -56,16 +75,17 @@ class Tickets(db.Model):
     __tablename__ = "tickets"
     id = Column(Integer, primary_key=True)
     member_id = Column('member_id', Integer, ForeignKey('members.id'),index=True, nullable=False)
-    concert_id = Column('concert_id', Integer, ForeignKey('concerts.id'), index=True, nullable=False)
-    priority = Column('priority', Integer, nullable=False)
+    schedule_id = Column('schedule_id', Integer, ForeignKey('schedules.id'), index=True, nullable=False)
     status = Column('status', String(255), nullable=False)
+    number = Column('number', Integer, nullable=False)
+    seate = Column('seate', String(255), nullable=True)
     created = Column('created', DATETIME, default=datetime.now, nullable=False)
     modified = Column('modified', DATETIME, nullable=True)
 
     #初期化
-    def __init__(self, member_id, concert_id, priority, status):
+    def __init__(self, member_id, schedule_id, status, number):
         self.member_id = member_id
-        self.concert_id = concert_id
-        self.priority = priority
+        self.schedule_id = schedule_id
         self.status = status
+        self.number = number
         self.created = datetime.now()
