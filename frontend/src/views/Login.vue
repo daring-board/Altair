@@ -16,7 +16,7 @@ export default {
   methods: {
     login () {
       this.$store.commit('setUserId', this.userId)
-      this.$router.push(this.$route.query.redirect)
+      this.$router.push('/')
     }
   }
 }

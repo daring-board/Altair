@@ -18,7 +18,7 @@
             <router-link class="nav-link" to="/about">About</router-link>
           </b-nav-item>
           <b-nav-item>
-            <router-link @click="logout()" v-if="$store.getters.loggedIn" class="nav-link" to="/login">Login</router-link>
+            <a @click="logout()" v-if="$store.getters.loggedIn" class="nav-link">Logout</a>
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
