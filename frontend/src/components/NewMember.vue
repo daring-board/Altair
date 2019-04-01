@@ -27,7 +27,8 @@
     methods: {
       submit(){
         const path = this.$baseURL + `regist_member`
-        axios.post(path, {'name': this.member_name})
+        axios.post(path, {'name': this.member_name}, 
+          {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
           .then(response => {
             /* eslint-disable */
             console.log(response.data)

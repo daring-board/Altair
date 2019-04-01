@@ -21,6 +21,7 @@ class Members(db.Model):
     """
     __tablename__ = "members"
     id = Column(Integer, primary_key=True)
+    user_id = Column('user_id', Integer, ForeignKey('users.id'), index=True, nullable=False)
     name = Column('name', String(255), index=True, nullable=False)
     application = Column('application', DATETIME, default=datetime.now, nullable=True)
     winning = Column('winning', DATETIME, nullable=True)
@@ -28,8 +29,9 @@ class Members(db.Model):
     modified = Column('modified', DATETIME, nullable=True)
 
     #初期化
-    def __init__(self, name):
+    def __init__(self, name, user_id):
         self.name = name
+        self.user_id = user_id
         self.created = datetime.now()
 
 class Concerts(db.Model):
@@ -38,18 +40,20 @@ class Concerts(db.Model):
     """
     __tablename__ = "concerts"
     id = Column(Integer, primary_key=True)
+    user_id = Column('user_id', Integer, ForeignKey('users.id'), index=True, nullable=False)
     name = Column('name', String(255), nullable=False)
     created = Column('created', DATETIME, default=datetime.now, nullable=False)
     modified = Column('modified', DATETIME, nullable=True)
 
     #初期化
-    def __init__(self, name):
+    def __init__(self, name, user_id):
         self.name = name
+        self.user_id = user_id
         self.created = datetime.now()
 
 class Schedules(db.Model):
     """
-    日時モデル
+    スケジュールモデル
     """
     __tablename__ = "schedules"
     id = Column(Integer, primary_key=True)
@@ -74,7 +78,7 @@ class Tickets(db.Model):
     """
     __tablename__ = "tickets"
     id = Column(Integer, primary_key=True)
-    member_id = Column('member_id', Integer, ForeignKey('members.id'),index=True, nullable=False)
+    member_id = Column('member_id', Integer, ForeignKey('members.id'), index=True, nullable=False)
     schedule_id = Column('schedule_id', Integer, ForeignKey('schedules.id'), index=True, nullable=False)
     status = Column('status', String(255), nullable=False)
     number = Column('number', Integer, nullable=False)
@@ -88,4 +92,21 @@ class Tickets(db.Model):
         self.schedule_id = schedule_id
         self.status = status
         self.number = number
+        self.created = datetime.now()
+
+class Users(db.Model):
+    """
+    ユーザーモデル
+    """
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True)
+    username = Column('username', String(255), index=True, unique=True, nullable=False)
+    password = Column('password', String(255), nullable=False)
+    created = Column('created', DATETIME, default=datetime.now, nullable=False)
+    modified = Column('modified', DATETIME, nullable=True)
+
+    #初期化
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
         self.created = datetime.now()

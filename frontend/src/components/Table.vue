@@ -25,11 +25,12 @@
     methods: {
       getMembers() {
         const path = this.$baseURL + `members`
-        axios.get(path)
+        /* eslint-disable */
+        console.log(this.$store.state.accessToken)
+        axios.get(path, 
+          {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
           .then(response => {
             this.members = response.data
-            /* eslint-disable */
-            console.log(this.members)
         })
       },
     },

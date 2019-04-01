@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request, jsonify, make_response
+from flask_jwt import JWT, jwt_required, current_identity
+from werkzeug.security import safe_str_cmp
 from flask_cors import CORS
-from models import db, Members, Concerts, Tickets, Schedules, get_model_dict
+from models import db, Users, Members, Concerts, Tickets, Schedules, get_model_dict
 import json
+import hashlib
 
 app = Flask(__name__,
             static_folder = "../frontend/dist",
@@ -17,8 +20,32 @@ SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{user}:{password}@{host}/the_name?cha
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_NATIVE_UNICODE'] = 'utf-8'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['SECRET_KEY'] = 'super-secret'
 db.init_app(app)
 db.app = app
+
+def authenticate(username, password):
+    user = Users.query.filter_by(username=username).first()
+    password = hashlib.sha512(password.encode('utf-8')).hexdigest()
+    if user and safe_str_cmp(user.password.encode('utf-8'), password):
+        return user
+
+def identity(payload):
+    user_id = payload['identity']
+    return Users.query.filter_by(id=user_id).first()
+
+jwt = JWT(app, authenticate, identity)
+
+@app.route('/api/regist_user', methods=["POST"])
+def regist_user():
+    data = request.data.decode('utf-8')
+    user = json.loads(data)
+    user['password'] = user['password'].encode('utf-8')
+    user['password'] = hashlib.sha512(user['password']).hexdigest()
+    user = Users(user['username'], user['password'])
+    db.session.add(user)
+    db.session.commit()
+    return jsonify(get_model_dict(user))
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -26,58 +53,72 @@ def catch_all(path):
     return render_template("index.html")
 
 @app.route('/api/members')
+@jwt_required()
 def members():
-    members = Members.query.all()
+    user = current_identity
+    members = Members.query.filter_by(user_id=user.id).all()
     members = [get_model_dict(member) for member in members]
     return jsonify(members)
 
 @app.route('/api/member/<id>')
+@jwt_required()
 def member(id):
-    member = Members.query.filter_by(id=id).first()
+    user = current_identity
+    member = Members.query.filter_by(id=id, user_id=user.id).first()
     return jsonify(get_model_dict(member))
 
 @app.route('/api/regist_member', methods=["POST"])
+@jwt_required()
 def regist_member():
+    user = current_identity
+    print(user)
     print(request.data.decode('utf-8'))
     data = request.data.decode('utf-8')
     name = json.loads(data)['name']
-    member = Members(name)
+    member = Members(name, user.id)
     db.session.add(member)
     db.session.commit()
     return jsonify(get_model_dict(member))
 
 @app.route('/api/concerts')
+@jwt_required()
 def concerts():
-    concerts = Concerts.query.all()
+    user = current_identity
+    concerts = Concerts.query.filter_by(user_id=user.id).all()
     concerts = [get_model_dict(concert) for concert in concerts]
     return jsonify(concerts)
 
 @app.route('/api/concert/<id>')
+@jwt_required()
 def concert(id):
-    concert = Concerts.query.filter_by(id=id).first()
+    user = current_identity
+    concert = Concerts.query.filter_by(id=id, user_id=user.id).first()
     return jsonify(get_model_dict(concert))
 
 @app.route('/api/regist_concert', methods=["POST"])
+@jwt_required()
 def regist_concert():
+    user = current_identity
     print(request.data.decode('utf-8'))
     data = request.data.decode('utf-8')
     data = json.loads(data)['concert']
-    concert = Concerts(data['name'])
+    concert = Concerts(data['name'], user.id)
     db.session.add(concert)
     db.session.commit()
     return jsonify(get_model_dict(concert))
 
 @app.route('/api/schedules')
+@jwt_required()
 def schedules():
     schedules = Schedules.query.all()
     schedules = [get_model_dict(schedule) for schedule in schedules]
     return jsonify(schedules)
 
 @app.route('/api/dict_schedules/<member_id>')
+@jwt_required()
 def dict_schedules(member_id):
     schedules = Schedules.query.all()
     schedules = [get_model_dict(schedule) for schedule in schedules]
-    print(schedules)
     ret = {}
     for schedule in schedules:
         concert_id = schedule['concert_id']
@@ -92,10 +133,10 @@ def dict_schedules(member_id):
             ret[concert_id].append(obj) 
         else:
             ret[concert_id] = [obj]
-    print(ret)
     return jsonify(ret)
 
 @app.route('/api/regist_schedule', methods=["POST"])
+@jwt_required()
 def regist_scheule():
     print(request.data.decode('utf-8'))
     data = request.data.decode('utf-8')
@@ -106,9 +147,9 @@ def regist_scheule():
     return jsonify(get_model_dict(schedule))
 
 @app.route('/api/ticket', methods=['POST'])
+@jwt_required()
 def ticket():
     data = request.data.decode('utf-8')
-    print(data)
     data = json.loads(data)
     member_id = data['member_id']
     schedule_id = data['schedule_id']
@@ -128,6 +169,7 @@ def ticket():
     return jsonify(ret)
 
 @app.route('/api/regist_ticket', methods=["POST"])
+@jwt_required()
 def regist_ticket():
     print(request.data.decode('utf-8'))
     data = request.data.decode('utf-8')

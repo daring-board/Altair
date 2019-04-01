@@ -52,7 +52,8 @@
     methods: {
       submit(){
         const path = this.$baseURL + `regist_schedule`
-        axios.post(path, {'schedule': this.form})
+        axios.post(path, {'schedule': this.form},
+          {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
           .then(response => {
             /* eslint-disable */
             console.log(response.data)
@@ -61,7 +62,8 @@
       },
       getConcerts(){
         const path = this.$baseURL + `concerts`
-        axios.get(path)
+        axios.get(path,
+          {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
           .then(response => {
             this.concerts = response.data
             response.data.forEach((concert) => { 

@@ -23,7 +23,8 @@ export default {
   props: ['id'],
   mounted: function() {
     const path = this.$baseURL + `member/` + this.id
-    axios.get(path)
+    axios.get(path,
+      {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
       .then(response => {
         this.member = response.data
         /* eslint-disable */

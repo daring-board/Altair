@@ -17,7 +17,7 @@
         チケットの申し込みを行う名義を選択する
       </b-form-text>
 
-      <label for="num">Time</label>
+      <label for="num">Number</label>
       <b-form-input class="text-center" id="num" :type="`number`" aria-describedby="num-help" required v-model="form.number"></b-form-input>
       <b-form-text id="num-help">
         Enter the ticket number in the upper area. 
@@ -47,7 +47,8 @@
     methods: {
       submit(){
         const path = this.$baseURL + `regist_ticket`
-        axios.post(path, {'ticket': this.form})
+        axios.post(path, {'ticket': this.form},
+          {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
           .then(response => {
             /* eslint-disable */
             console.log(response.data)
@@ -56,7 +57,8 @@
       },
       getMembers(){
         const path = this.$baseURL + `members`
-        axios.get(path)
+        axios.get(path, 
+          {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
           .then(response => {
             this.members = response.data
             response.data.forEach((member) => {
@@ -72,12 +74,14 @@
       },
       getSchedules(){
         const path = this.$baseURL + `schedules`
-        axios.get(path)
+        axios.get(path, 
+          {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
           .then(response => {
             this.schedules = response.data
             response.data.forEach((schedule) => {
               const c_path = this.$baseURL + `concert/` + schedule.concert_id
-              axios.get(c_path)
+              axios.get(c_path,
+                {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
                 .then(res => {
                   this.s_options.push({
                     text: res.data.name + ' ' + schedule.date + ' ' + schedule.time,

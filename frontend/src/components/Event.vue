@@ -31,7 +31,8 @@
     methods: {
       getConcerts: function() {
         const path = this.$baseURL + `concerts`
-        axios.get(path)
+        axios.get(path,
+          {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
           .then(response => {
             this.concerts = response.data
             /* eslint-disable */
@@ -41,7 +42,8 @@
       },
       getSchedules: function() {
         const path = this.$baseURL + `dict_schedules/` + this.member_id
-        axios.get(path)
+        axios.get(path,
+          {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
           .then(response => {
             this.schedules = response.data
             /* eslint-disable */
