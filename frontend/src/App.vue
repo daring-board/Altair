@@ -2,9 +2,9 @@
   <div id="app">
     <b-navbar toggleable="lg" type="dark" variant="info">
       <b-navbar-brand><div @click="to_home">名義管理システム</div></b-navbar-brand>
-      <b-navbar-toggle target="nav_collapse" />
+      <b-navbar-toggle v-show="is_login" target="nav_collapse" />
       <b-collapse is-nav id="nav_collapse">
-        <b-navbar-nav>
+        <b-navbar-nav v-show="is_login" >
           <b-nav-item>
             <router-link class="nav-link" to="/">Home</router-link>
           </b-nav-item>
@@ -42,6 +42,20 @@ export default {
     },
     to_home() {
       this.$router.push('/')
+    },
+  },
+  computed: {
+    is_login: function() {
+      if(this.$store.state.accessToken == ''){
+        return false
+      }
+      return true 
+    }
+  },
+  mounted() {
+
+    if (sessionStorage.getItem('accessToken')) {
+      this.$store.commit('reload', sessionStorage.getItem('accessToken'))
     }
   }
 }

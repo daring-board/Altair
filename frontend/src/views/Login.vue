@@ -12,6 +12,7 @@
         </b-col>
         <b-col sm="1"></b-col>
       </b-row>
+      <br/>
       <b-row>
         <b-col sm="1"></b-col>
         <b-col sm="3">
@@ -22,6 +23,7 @@
         </b-col>
         <b-col sm="1"></b-col>
       </b-row>
+      <br/>
       <b-row>
         <b-col sm="8"></b-col>
         <b-col sm="3">
@@ -45,7 +47,7 @@ export default {
   },
   methods: {
     login () {
-      this.$store.commit('auth',this.user)
+      this.$store.commit('auth', this.user)
     }
   }
 }

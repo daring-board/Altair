@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import createPersistedState from "vuex-persistedstate";
 import router from './router'
 import axios from 'axios'
 
@@ -21,6 +20,7 @@ export default new Vuex.Store({
     auth(state, user) {
       if(user == '') {
         state.accessToken = ''
+        sessionStorage.setItem('accessToken', state.accessToken);
         return
       }
       const path = Vue.prototype.$baseURL.replace('api/', '') + `auth`
@@ -29,12 +29,16 @@ export default new Vuex.Store({
         /* eslint-disable */
         // console.log(response.data['access_token'])
         state.accessToken = response.data['access_token']
+        sessionStorage.setItem('accessToken', state.accessToken);
         router.push('/')
       })
+    },
+    reload(state, token) {
+      state.accessToken = token
+      router.push('/')
     }
   },
   actions: {
 
   },
-  plugins: [createPersistedState({storage: window.sessionStorage})]
 })
