@@ -3,6 +3,10 @@
     <div v-for="concert in concerts" v-bind:key="concert.id">
       <h3 style='text-align: left; margin-left: 10px'>{{concert.name}}</h3>
       <b-table striped hover :items="schedules[concert.id]" :fields="fields">
+        <template slot="status" slot-scope="data">
+          <b-form-select v-model="data.winning" :options="options"> 
+          </b-form-select>
+        </template>
       </b-table>
     </div>
   </div>
@@ -22,6 +26,11 @@
             formatter: value => {return `${value}枚`}
           },
           {key: 'status', label: 'ステータス'},
+        ],
+        options: [
+          {value: 'Applyed', text: 'Applyed'},
+          {value: 'Winning', text: 'Winning'},
+          {value: 'Done', text: 'Done'},
         ],
         concerts: null,
         schedules: null,
