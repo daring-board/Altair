@@ -4,10 +4,11 @@
       <template slot="name" slot-scope="data">
         <router-link v-bind:to="{ name : 'manage', params : { id: data.item.id }}">{{ data.value }}</router-link>
       </template>
-      <template slot="winning" slot-scope="data">
-        <b-form-input :type="`date`" v-model="data.winning"></b-form-input>
+      <template slot="edit">
+        <b-button v-b-modal.edit-modal>Show Modal</b-button>
       </template>
     </b-table>
+    <b-modal id="edit-modal">Hello From My Modal!</b-modal>
   </div>
 </template>
 
@@ -21,7 +22,8 @@
         fields: [
           {key: 'name', label: '名前'},
           {key: 'application', label: '申し込み日'},
-          {key: 'winning', label: '当選日'}],
+          {key: 'winning', label: '当選日'},
+          {key: 'edit', label: '編集'}],
         members: []
       }
     },
