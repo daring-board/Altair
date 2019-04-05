@@ -24,16 +24,27 @@
         flag: false
       }
     },
+    props: [
+      'member'
+    ],
     methods: {
       submit(){
         const path = this.$baseURL + `regist_member`
         axios.post(path, {'name': this.member_name}, 
           {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
           .then(response => {
+            // this.flag = true
+            this.$emit('new-member-add');
             /* eslint-disable */
             console.log(response.data)
-            this.flag = true
         })
+      }
+    },
+    mounted: function(){
+      /* eslint-disable */
+      console.log(this.member)
+      if(this.member){
+        member_name = this.member.name
       }
     }
   }

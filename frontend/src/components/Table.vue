@@ -13,10 +13,12 @@
         </div>
       </template>
     </b-table>
-    <b-modal id="add-modal" hide-footer>
-      <NewMember/>
+    <b-modal id="add-modal" ref="add-ref" hide-footer>
+      <NewMember v-on:new-member-add="getMembers"/>
     </b-modal>
-    <b-modal id="edit-modal">Hello From My Modal!</b-modal>
+    <b-modal id="edit-modal">
+      <NewMember member=data.value v-on:new-member="getMembers" hide-footer/>
+    </b-modal>
   </div>
 </template>
 
@@ -54,6 +56,12 @@
             })
         })
       },
+      addMembers() {
+        /* eslint-disable */
+        console.log(response.data)
+        this.$refs['add-ref'].hide()
+        this.getMembers()
+      }
     },
     created: function() {
       this.getMembers()
