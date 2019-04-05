@@ -4,18 +4,30 @@
       <template slot="name" slot-scope="data">
         <router-link v-bind:to="{ name : 'manage', params : { id: data.item.id }}">{{ data.value }}</router-link>
       </template>
-      <template slot="edit">
-        <b-button v-b-modal.edit-modal>Show Modal</b-button>
+      <template slot="edit" slot-scope="data">
+        <div v-if="data.item.edit == 'Add'">
+          <b-button v-b-modal.add-modal>新規追加</b-button>
+        </div>
+        <div v-else>
+          <b-button v-b-modal.edit-modal>変更</b-button>
+        </div>
       </template>
     </b-table>
+    <b-modal id="add-modal" hide-footer>
+      <NewMember/>
+    </b-modal>
     <b-modal id="edit-modal">Hello From My Modal!</b-modal>
   </div>
 </template>
 
 <script>
   import axios from 'axios'
+  import NewMember from '@/components/NewMember.vue'
 
   export default {
+    components: {
+      NewMember
+    },
     data() {
       return {
         // Note `isActive` is left out and will not appear in the rendered table
@@ -34,6 +46,12 @@
           {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
           .then(response => {
             this.members = response.data
+            this.members.push({
+              'name': '',
+              'application': '',
+              'winning': '',
+              'edit': 'Add',
+            })
         })
       },
     },
