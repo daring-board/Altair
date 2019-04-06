@@ -6,30 +6,36 @@
       </template>
       <template slot="edit" slot-scope="data">
         <div v-if="data.item.edit == 'Add'">
-          <b-button v-b-modal.add-modal>新規追加</b-button>
+          <b-button v-b-modal.add-modal @click="changeTitle('新規追加')">新規追加</b-button>
         </div>
         <div v-else>
-          <b-button v-b-modal.edit-modal>変更</b-button>
+          <b-button v-b-modal.add-modal @click="selectMember(data.item, '変更')">変更</b-button>
         </div>
       </template>
     </b-table>
-    <b-modal id="add-modal" ref="add-ref" hide-footer>
-      <NewMember v-on:new-member-add="getMembers"/>
-    </b-modal>
-    <b-modal id="edit-modal">
-      <NewMember member=data.value v-on:new-member="getMembers" hide-footer/>
+    <b-modal
+      id="add-modal"
+      ref="modal"
+      @ok="addOk"
+    >
+      <div slot="modal-header">
+        {{title_str}}
+      </div>
+      <form @submit.stop.prevent="submit">
+        <label for="member-name">Name</label>
+        <b-form-input id="member-name" aria-describedby="member-name-help" required v-model="member['name']"/>
+        <b-form-text id="member-name-help">
+          Input name of new member, and push following button. 
+        </b-form-text>
+      </form>
     </b-modal>
   </div>
 </template>
 
 <script>
   import axios from 'axios'
-  import NewMember from '@/components/NewMember.vue'
 
   export default {
-    components: {
-      NewMember
-    },
     data() {
       return {
         // Note `isActive` is left out and will not appear in the rendered table
@@ -38,10 +44,26 @@
           {key: 'application', label: '申し込み日'},
           {key: 'winning', label: '当選日'},
           {key: 'edit', label: '編集'}],
-        members: []
+        members: [],
+        member: {
+          'name': '',
+          'application': '',
+          'winning': '',
+          'edit': '',
+        },
+        title_str: '新規追加'
       }
     },
     methods: {
+      changeTitle(str){
+        this.title_str = str
+      },
+      selectMember(data, title){
+        this.changeTitle(title)
+        /* eslint-disable */
+        console.log(data)
+        this.member = data
+      },
       getMembers() {
         const path = this.$baseURL + `members`
         axios.get(path, 
@@ -56,11 +78,38 @@
             })
         })
       },
-      addMembers() {
+      addOk(evt) {
+      // Prevent modal from closing
+        evt.preventDefault()
         /* eslint-disable */
-        console.log(response.data)
-        this.$refs['add-ref'].hide()
-        this.getMembers()
+        console.log(this.member)
+        if (!this.member['name']) {
+          alert('Please enter your name')
+        } else {
+          this.submit()
+        }
+      },
+      clearName(){
+        this.member = {
+          'name': '',
+          'application': '',
+          'winning': '',
+          'edit': '',
+        }
+      },
+      submit() {
+        const path = this.$baseURL + `regist_member`
+        axios.post(path, {'member': this.member}, 
+          {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
+          .then(response => {
+            this.getMembers()
+            this.$nextTick(() => {
+              // Wrapped in $nextTick to ensure DOM is rendered before closing
+              this.$refs.modal.hide()
+            })
+            /* eslint-disable */
+            console.log(response.data)
+        })
       }
     },
     created: function() {

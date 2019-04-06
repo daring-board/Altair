@@ -44,7 +44,7 @@
       /* eslint-disable */
       console.log(this.member)
       if(this.member){
-        member_name = this.member.name
+        this.member_name = this.member.name
       }
     }
   }

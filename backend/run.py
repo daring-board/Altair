@@ -3,6 +3,7 @@ from flask_jwt import JWT, jwt_required, current_identity
 from werkzeug.security import safe_str_cmp
 from flask_cors import CORS
 from models import db, Users, Members, Concerts, Tickets, Schedules, get_model_dict
+from dateutil.relativedelta import relativedelta
 import json
 import hashlib
 
@@ -21,6 +22,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_NATIVE_UNICODE'] = 'utf-8'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SECRET_KEY'] = 'super-secret'
+app.config['JWT_EXPIRATION_DELTA'] =  relativedelta(months=3)
 db.init_app(app)
 db.app = app
 
@@ -74,11 +76,20 @@ def regist_member():
     print(user)
     print(request.data.decode('utf-8'))
     data = request.data.decode('utf-8')
-    name = json.loads(data)['name']
-    member = Members(name, user.id)
-    db.session.add(member)
+    member = json.loads(data)['member']
+    if 'id' in member.keys():
+        print('update')
+        obj = Members.query.get(member['id'])
+        obj.name = member['name']
+        print(get_model_dict(obj))
+        member = jsonify(get_model_dict(obj))
+    else:
+        print('create')
+        member = Members(member['name'], user.id)
+        db.session.add(member)
+        member = jsonify(get_model_dict(member))
     db.session.commit()
-    return jsonify(get_model_dict(member))
+    return member
 
 @app.route('/api/concerts')
 @jwt_required()
@@ -101,11 +112,20 @@ def regist_concert():
     user = current_identity
     print(request.data.decode('utf-8'))
     data = request.data.decode('utf-8')
-    data = json.loads(data)['concert']
-    concert = Concerts(data['name'], user.id)
-    db.session.add(concert)
+    concert = json.loads(data)['concert']
+    if 'id' in concert.keys():
+        print('update')
+        obj = Concerts.query.get(concert['id'])
+        obj.name = concert['name']
+        print(get_model_dict(obj))
+        concert = jsonify(get_model_dict(obj))
+    else:
+        print('create')
+        concert = Concerts(concert['name'], user.id)
+        db.session.add(concert)
+        concert = jsonify(get_model_dict(concert))
     db.session.commit()
-    return jsonify(get_model_dict(concert))
+    return concert
 
 @app.route('/api/schedules')
 @jwt_required()
