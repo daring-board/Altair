@@ -144,15 +144,18 @@ def dict_schedules(member_id):
         concert_id = schedule['concert_id']
         ticket = Tickets.query.filter_by(member_id=member_id, schedule_id=schedule['id']).first()
         obj = {}
+        obj['schedule_id'] = schedule['id']
         obj['date'] = '%s %s'%(schedule['date'], schedule['time'])
         obj['place'] = schedule['place']
         if ticket is None: continue
+        obj['ticket_id'] = ticket.id
         obj['status'] = ticket.status
         obj['num'] = ticket.number
         if concert_id in ret.keys():
             ret[concert_id].append(obj) 
         else:
             ret[concert_id] = [obj]
+    print(ret)
     return jsonify(ret)
 
 @app.route('/api/regist_schedule', methods=["POST"])
@@ -160,11 +163,38 @@ def dict_schedules(member_id):
 def regist_scheule():
     print(request.data.decode('utf-8'))
     data = request.data.decode('utf-8')
-    data = json.loads(data)['schedule']
-    schedule = Schedules(data['concert']['id'], data['date'], data['time'], data['place'])
-    db.session.add(schedule)
+    sch = json.loads(data)['schedule']
+    if 'id' in sch.keys():
+        print('update')
+        obj = Schedules.query.get(sch['id'])
+        obj.date = sch['date']
+        obj.time = sch['time']
+        obj.place = sch['place']
+        print(get_model_dict(obj))
+        schedule = jsonify(get_model_dict(obj))
+    else:
+        print('create')
+        schedule = Schedules(sch['concert']['id'], sch['date'], sch['time'], sch['place'])
+        db.session.add(schedule)
+        schedule = jsonify(get_model_dict(schedule))
     db.session.commit()
-    return jsonify(get_model_dict(schedule))
+    return schedule
+
+@app.route('/api/save_schedule', methods=["POST"])
+@jwt_required()
+def save_scheule():
+    print(request.data.decode('utf-8'))
+    data = request.data.decode('utf-8')
+    sch = json.loads(data)['schedule']
+    print('update')
+    obj = Schedules.query.get(sch['id'])
+    obj.date = sch['date']
+    obj.time = sch['time']
+    obj.place = sch['place']
+    print(get_model_dict(obj))
+    schedule = jsonify(get_model_dict(obj))
+    db.session.commit()
+    return schedule
 
 @app.route('/api/ticket', methods=['POST'])
 @jwt_required()
@@ -193,11 +223,39 @@ def ticket():
 def regist_ticket():
     print(request.data.decode('utf-8'))
     data = request.data.decode('utf-8')
-    data = json.loads(data)['ticket']
-    ticket = Tickets(data['member']['id'], data['schedule']['id'], 'Applyed', data['number'])
-    db.session.add(ticket)
+
+    ticket = json.loads(data)['ticket']
+    if 'id' in ticket.keys():
+        print('update')
+        obj = Tickets.query.get(ticket['id'])
+        obj.number = ticket['num']
+        obj.status = ticket['status']
+        print(get_model_dict(obj))
+        ticket = jsonify(get_model_dict(obj))
+    else:
+        print('create')
+        ticket = Tickets(ticket['member']['id'], ticket['schedule']['id'], ticket['status'], ticket['number'])
+        db.session.add(ticket)
+        ticket = jsonify(get_model_dict(ticket))
+
     db.session.commit()
-    return jsonify(get_model_dict(ticket))
+    return ticket
+
+@app.route('/api/save_ticket', methods=["POST"])
+@jwt_required()
+def save_ticket():
+    print(request.data.decode('utf-8'))
+    data = request.data.decode('utf-8')
+    ticket = json.loads(data)['ticket']
+    print('update')
+    obj = Tickets.query.get(ticket['id'])
+    obj.number = ticket['num']
+    obj.status = ticket['status']
+    print(get_model_dict(obj))
+    ticket = jsonify(get_model_dict(obj))
+    db.session.commit()
+    return ticket
+
 
 @app.errorhandler(404)
 def not_found(error):
