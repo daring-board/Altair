@@ -6,10 +6,14 @@
       </template>
       <template slot="edit" slot-scope="data">
         <div v-if="data.item.edit == 'Add'">
-          <b-button v-b-modal.add-modal @click="changeTitle('新規追加')">新規追加</b-button>
+          <b-button v-b-modal.add-modal @click="changeTitle('新規追加')">
+            <i class="fas fa-plus"></i>
+          </b-button>
         </div>
         <div v-else>
-          <b-button v-b-modal.add-modal @click="selectMember(data.item, '変更')">変更</b-button>
+          <b-button v-b-modal.add-modal @click="selectMember(data.item, '変更')">
+            <i class="fas fa-edit"></i>
+          </b-button>
         </div>
       </template>
     </b-table>

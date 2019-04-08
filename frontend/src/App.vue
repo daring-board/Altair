@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <b-navbar toggleable="lg" type="dark" variant="info">
       <b-navbar-brand><div @click="to_home">名義管理システム</div></b-navbar-brand>
       <b-navbar-toggle v-show="is_login" target="nav_collapse" />

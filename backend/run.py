@@ -170,14 +170,13 @@ def regist_scheule():
         obj.date = sch['date']
         obj.time = sch['time']
         obj.place = sch['place']
-        print(get_model_dict(obj))
-        schedule = jsonify(get_model_dict(obj))
+        schedule = obj
     else:
         print('create')
         schedule = Schedules(sch['concert']['id'], sch['date'], sch['time'], sch['place'])
         db.session.add(schedule)
-        schedule = jsonify(get_model_dict(schedule))
     db.session.commit()
+    schedule = jsonify(get_model_dict(schedule))
     return schedule
 
 @app.route('/api/save_schedule', methods=["POST"])
@@ -191,9 +190,8 @@ def save_scheule():
     obj.date = sch['date']
     obj.time = sch['time']
     obj.place = sch['place']
-    print(get_model_dict(obj))
-    schedule = jsonify(get_model_dict(obj))
     db.session.commit()
+    schedule = jsonify(get_model_dict(obj))
     return schedule
 
 @app.route('/api/ticket', methods=['POST'])
@@ -230,15 +228,13 @@ def regist_ticket():
         obj = Tickets.query.get(ticket['id'])
         obj.number = ticket['num']
         obj.status = ticket['status']
-        print(get_model_dict(obj))
-        ticket = jsonify(get_model_dict(obj))
+        ticket = obj
     else:
         print('create')
         ticket = Tickets(ticket['member']['id'], ticket['schedule']['id'], ticket['status'], ticket['number'])
         db.session.add(ticket)
-        ticket = jsonify(get_model_dict(ticket))
-
     db.session.commit()
+    ticket = jsonify(get_model_dict(ticket))
     return ticket
 
 @app.route('/api/save_ticket', methods=["POST"])
@@ -251,9 +247,8 @@ def save_ticket():
     obj = Tickets.query.get(ticket['id'])
     obj.number = ticket['num']
     obj.status = ticket['status']
-    print(get_model_dict(obj))
-    ticket = jsonify(get_model_dict(obj))
     db.session.commit()
+    ticket = jsonify(get_model_dict(obj))
     return ticket
 
 

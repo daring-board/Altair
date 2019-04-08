@@ -4,14 +4,20 @@
     <div v-for="concert in concerts" v-bind:key="concert.id">
       <div>
         <h3 style='text-align: left; margin-left: 10px; float: left'>{{concert.name}}</h3>
-        <b-button class="edit-title" v-b-modal.add-event @click="selectEvt(concert, 'イベント名変更')">変更</b-button>
+        <b-button class="edit-title" v-b-modal.add-event @click="selectEvt(concert, 'イベント名変更')">
+          <i class="fas fa-edit"></i>
+        </b-button>
       </div>
       <b-table striped hover :items="schedules[concert.id]" :fields="fields">
         <template slot="edit" slot-scope="data">
-          <b-button v-b-modal.edit-modal @click="setObj(data.item)">変更</b-button>
+          <b-button v-b-modal.edit-modal @click="setObj(data.item)">
+            <i class="fas fa-edit"></i>
+          </b-button>
         </template>
       </b-table>
-      <b-button v-b-modal.add-schedule @click="schedule.concert = concert">新規追加</b-button>
+      <b-button style="margin-bottom:15px;" v-b-modal.add-schedule @click="schedule.concert = concert">
+        <i class="fas fa-plus"></i>
+      </b-button>
     </div>
     <!-- チケット編集モーダル -->
     <b-modal
@@ -124,7 +130,7 @@
           {key: 'num', label: '枚数', 
             formatter: value => {return `${value}枚`}
           },
-          {key: 'status', label: 'ステータス'},
+          {key: 'status', label: '状態'},
           {key: 'edit', label: '編集'},
         ],
         options: [
@@ -327,7 +333,9 @@
         })
       },
       registTicket: function(schedule){
-
+        /* eslint-disable */
+        console.log('Regist Ticket')
+        console.log(schedule)
         this.members.forEach((member) => {
           let num = (member.id == this.member_id)? 1: 0
           let status = (member.id == this.member_id)? 'Applyed': 'Not applyed'
