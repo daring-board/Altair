@@ -171,31 +171,31 @@
     props: ['member_id'],
     computed: {
       checkEventName(){
-        return /\S/g.exec(this.event.name)? false: true
+        return /\S/g.exec(this.event.name)? true: false
       },
       checkSchPlace(){
-        return /\S/g.exec(this.schedule.place)? false: true
+        return /\S/g.exec(this.schedule.place)? true: false
       },
       checkSchTime(){
-        return /\S/g.exec(this.schedule.time)? false: true
+        return /\S/g.exec(this.schedule.time)? true: false
       },
       checkSchDate(){
-        return /\S/g.exec(this.schedule.date)? false: true
+        return /\S/g.exec(this.schedule.date)? true: false
       },
       checkEditPlace(){
-        return /\S/g.exec(this.edit_form.place)? false: true
+        return /\S/g.exec(this.edit_form.place)? true: false
       },
       checkEditTime(){
-        return /\S/g.exec(this.edit_form.time)? false: true
+        return /\S/g.exec(this.edit_form.time)? true: false
       },
       checkEditDate(){
-        return /\S/g.exec(this.edit_form.date)? false: true
+        return /\S/g.exec(this.edit_form.date)? true: false
       },
       checkEditState(){
-        return /\S/g.exec(this.edit_form.state)? false: true
+        return /\S/g.exec(this.edit_form.state)? true: false
       },
       checkEditNumber(){
-        return /\S/g.exec(this.schedule.number)? false: true
+        return /\S/g.exec(this.schedule.number)? true: false
       }
     },
     methods: {

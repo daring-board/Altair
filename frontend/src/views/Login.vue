@@ -56,7 +56,9 @@ export default {
   },
   computed: {
     userNameValidate() {
-      return /\S/g.exec(this.username)? false: true
+      /* eslint-disable */
+      console.log(/\S/g.exec(this.user.username))
+      return /\S/g.exec(this.user.username)? true: false
     }
   },
   methods: {
