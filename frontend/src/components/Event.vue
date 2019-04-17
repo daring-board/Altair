@@ -28,6 +28,7 @@
       id="edit-modal"
       ref="e_modal"
       @ok="editOk"
+      @cancel="cancelModel"
     >
       <div slot="modal-header">
         チケット編集
@@ -69,7 +70,7 @@
       id="add-schedule"
       ref="s_modal"
       @ok="addSchedule"
-      @cancel="event = {name: null}"
+      @cancel="cancelModel"
     >
       <div slot="modal-header">
         スケジュール追加
@@ -105,7 +106,7 @@
       id="add-event"
       ref="modal"
       @ok="addOk"
-      @cancel="event = {name: null}"
+      @cancel="cancelEventModal"
     >
       <div slot="modal-header">
         {{event_modal_title}}
@@ -423,6 +424,14 @@
             this.members = response.data
         })
       },
+      cancelEventModal(){
+        event = {name: null}
+        this.getConcerts()
+      },
+      cancelModel(){
+        event = {name: null}
+        this.getSchedules()
+      }
     },
     mounted: function() {
       this.getSchedules()

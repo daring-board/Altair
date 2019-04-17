@@ -21,6 +21,7 @@
       id="add-modal"
       ref="modal"
       @ok="addOk"
+      @cancel="cancel"
     >
       <div slot="modal-header">
         {{title_str}}
@@ -32,7 +33,7 @@
           required
           v-model="member['name']"
           :state="checkName"
-          />
+        />
         <b-form-text id="member-name-help">
           Input name of new member, and push following button. 
         </b-form-text>
@@ -91,6 +92,9 @@
               'edit': 'Add',
             })
         })
+      },
+      cancel() {
+        this.getMembers()
       },
       addOk(evt) {
       // Prevent modal from closing
