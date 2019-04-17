@@ -10,14 +10,18 @@
       </div>
       <b-table striped hover :items="schedules[concert.id]" :fields="fields">
         <template slot="edit" slot-scope="data">
-          <b-button v-b-modal.edit-modal @click="setObj(data.item)">
-            <i class="fas fa-edit"></i>
-          </b-button>
+          <div v-if="data.item.edit != 'Add'">
+            <b-button v-b-modal.edit-modal @click="setObj(data.item)">
+              <i class="fas fa-edit"></i>
+            </b-button>
+          </div>
+          <div v-else>
+            <b-button style="margin-bottom:15px;" v-b-modal.add-schedule @click="schedule.concert = concert">
+              <i class="fas fa-plus"></i>
+            </b-button>
+          </div>
         </template>
       </b-table>
-      <b-button style="margin-bottom:15px;" v-b-modal.add-schedule @click="schedule.concert = concert">
-        <i class="fas fa-plus"></i>
-      </b-button>
     </div>
     <!-- チケット編集モーダル -->
     <b-modal
@@ -128,7 +132,7 @@
           {key: 'place', label: '場所'},
           {key: 'date', label: '日時'},
           {key: 'num', label: '枚数', 
-            formatter: value => {return `${value}枚`}
+            formatter: value => {return (value != null)? `${value}枚`: ''}
           },
           {key: 'status', label: '状態'},
           {key: 'edit', label: '編集'},
@@ -274,6 +278,12 @@
                 text: concert.name,
                 value: concert
               })
+              if(!this.schedules[concert.id]){
+                this.schedules[concert.id] = []
+              }
+              this.schedules[concert.id].push({
+                'edit': 'Add',
+              })
             }) 
             /* eslint-disable */
             console.log('Concerts')
@@ -311,14 +321,36 @@
         let ticket = {
           id: this.edit_form.ticket_id,
           num: this.edit_form.num,
-          status: this.edit_form.status
+          status: this.edit_form.status,
         }
+        let tmp_obj = {}
         let path = this.$baseURL + `save_ticket`
         axios.post(path, {'ticket': ticket},
           {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
           .then(response => {
             /* eslint-disable */
             console.log(response.data)
+            tmp_obj = response.data
+            path = this.$baseURL + `member/` + this.member_id
+            axios.get(path,
+              {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
+              .then(response => {
+                /* eslint-disable */
+                console.log(response.data)
+                var obj = response.data
+                obj.application = tmp_obj.created
+                if(tmp_obj.status == 'Winning'){
+                  obj.winning = tmp_obj.modified
+                }else{
+                  obj.winning = null
+                }
+                path = this.$baseURL + `regist_member`
+                /* eslint-disable */
+                console.log(path)
+                axios.post(path, {'member': obj},
+                  {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
+                  .then(response => {})
+              })
         })
 
         let schedule = {

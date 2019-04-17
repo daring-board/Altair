@@ -4,6 +4,7 @@ from werkzeug.security import safe_str_cmp
 from flask_cors import CORS
 from models import db, Users, Members, Concerts, Tickets, Schedules, get_model_dict
 from dateutil.relativedelta import relativedelta
+from datetime import datetime, time
 import json
 import hashlib
 
@@ -81,6 +82,8 @@ def regist_member():
         print('update')
         obj = Members.query.get(member['id'])
         obj.name = member['name']
+        obj.application = member['application']
+        obj.winning = member['winning']
         print(get_model_dict(obj))
         member = jsonify(get_model_dict(obj))
     else:
@@ -170,6 +173,7 @@ def regist_scheule():
         obj.date = sch['date']
         obj.time = sch['time']
         obj.place = sch['place']
+        obj.modified = datetime.now()
         schedule = obj
     else:
         print('create')
@@ -190,6 +194,7 @@ def save_scheule():
     obj.date = sch['date']
     obj.time = sch['time']
     obj.place = sch['place']
+    obj.modified = datetime.now()
     db.session.commit()
     schedule = jsonify(get_model_dict(obj))
     return schedule
@@ -228,6 +233,7 @@ def regist_ticket():
         obj = Tickets.query.get(ticket['id'])
         obj.number = ticket['num']
         obj.status = ticket['status']
+        obj.modified = datetime.now()
         ticket = obj
     else:
         print('create')
@@ -247,6 +253,7 @@ def save_ticket():
     obj = Tickets.query.get(ticket['id'])
     obj.number = ticket['num']
     obj.status = ticket['status']
+    obj.modified = datetime.now()
     db.session.commit()
     ticket = jsonify(get_model_dict(obj))
     return ticket
