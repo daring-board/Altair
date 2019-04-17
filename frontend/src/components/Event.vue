@@ -28,7 +28,7 @@
       id="edit-modal"
       ref="e_modal"
       @ok="editOk"
-      @cancel="cancelModel"
+      @hide="cancelModel"
     >
       <div slot="modal-header">
         チケット編集
@@ -70,7 +70,7 @@
       id="add-schedule"
       ref="s_modal"
       @ok="addSchedule"
-      @cancel="cancelModel"
+      @hide="cancelModel"
     >
       <div slot="modal-header">
         スケジュール追加
@@ -106,7 +106,7 @@
       id="add-event"
       ref="modal"
       @ok="addOk"
-      @cancel="cancelEventModal"
+      @hide="cancelEventModal"
     >
       <div slot="modal-header">
         {{event_modal_title}}

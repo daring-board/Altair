@@ -21,7 +21,7 @@
       id="add-modal"
       ref="modal"
       @ok="addOk"
-      @cancel="cancel"
+      @hide="cancel"
     >
       <div slot="modal-header">
         {{title_str}}
