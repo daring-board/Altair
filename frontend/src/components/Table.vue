@@ -97,7 +97,7 @@
         evt.preventDefault()
         /* eslint-disable */
         console.log(this.member)
-        if (!this.member['name']) {
+        if (!/\S/g.exec(this.member['name'])) {
           alert('Please enter your name')
         } else {
           this.submit()

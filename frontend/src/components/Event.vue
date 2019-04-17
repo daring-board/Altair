@@ -225,15 +225,15 @@
         evt.preventDefault()
         /* eslint-disable */
         console.log(this.edit_form.date)
-        if (!this.edit_form.date) {
+        if (!/\S/g.exec(this.edit_form.date)) {
           alert('Please select date')
-        } else if(!this.edit_form.time){
+        } else if(!/\S/g.exec(this.edit_form.time)){
           alert('Please select time')
-        } else if(!this.edit_form.place){
+        } else if(!/\S/g.exec(this.edit_form.place)){
           alert('Please enter place')
-        } else if(!this.edit_form.num){
+        } else if(!/\S/g.exec(this.edit_form.num)){
           alert('Please enter number of ticket')
-        } else if(!this.edit_form.status){
+        } else if(!/\S/g.exec(this.edit_form.status)){
           alert('Please select status')
         } else {
           this.saveForm()
@@ -244,7 +244,7 @@
         evt.preventDefault()
         /* eslint-disable */
         console.log(this.event)
-        if (!this.event.name) {
+        if (!/\S/g.exec(this.event.name)) {
           alert('Please enter your name')
         } else {
           this.submit()
@@ -255,13 +255,13 @@
         evt.preventDefault()
         /* eslint-disable */
         console.log(this.schedule)
-        if (!this.schedule.concert) {
+        if (!/\S/g.exec(this.schedule.concert)) {
           alert('Please select event')
-        } else if(!this.schedule.date){
+        } else if(!/\S/g.exec(this.schedule.date)) {
           alert('Please select date')
-        } else if(!this.schedule.time){
+        } else if(!/\S/g.exec(this.schedule.time)) {
           alert('Please enter time')
-        } else if(!this.schedule.place){
+        } else if(!/\S/g.exec(this.schedule.place)) {
           alert('Please enter place')
         }else{
           this.submitSchedule()
