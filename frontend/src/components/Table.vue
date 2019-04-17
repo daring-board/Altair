@@ -80,6 +80,8 @@
         this.member = data
       },
       getMembers() {
+        /* eslint-disable */
+        console.log('getMember')
         const path = this.$baseURL + `members`
         axios.get(path, 
           {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
