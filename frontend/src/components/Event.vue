@@ -30,31 +30,31 @@
       </div>
       <form @submit.stop.prevent="editOk">
         <label for="date">Date</label>
-        <b-form-input class="text-center" id="date" :type="`date`" aria-describedby="date-help" required v-model="edit_form.date"></b-form-input>
+        <b-form-input class="text-center" id="date" :type="`date`" :state="checkEditDate" aria-describedby="date-help" required v-model="edit_form.date"></b-form-input>
         <b-form-text id="date-help">
           Enter the event date in the upper area. 
         </b-form-text>
 
         <label for="time">Time</label>
-        <b-form-input class="text-center" id="time" :type="`time`" aria-describedby="time-help" required v-model="edit_form.time"></b-form-input>
+        <b-form-input class="text-center" id="time" :type="`time`" :state="checkEditTime" aria-describedby="time-help" required v-model="edit_form.time"></b-form-input>
         <b-form-text id="time-help">
           Enter the event time in the upper area. 
         </b-form-text>
         
         <label for="place">Place</label>
-        <b-input id="place" aria-describedby="place-help" required v-model="edit_form.place"/>
+        <b-input id="place" aria-describedby="place-help" :state="checkEditPlace" required v-model="edit_form.place"/>
         <b-form-text id="place-help">
           Enter the event place in the upper area. 
         </b-form-text>
 
         <label for="num">Number of Ticket</label>
-        <b-input id="num" aria-describedby="num-help" :type="`number`" required v-model="edit_form.num"/>
+        <b-input id="num" aria-describedby="num-help" :type="`number`" :state="checkEditNumber" required v-model="edit_form.num"/>
         <b-form-text id="num-help">
           Enter the Number of Ticket in the upper area. 
         </b-form-text>
 
         <label for="status">Status</label>
-        <b-form-select id="status" aria-describedby="status-help" :options="options" required v-model="edit_form.status"/>
+        <b-form-select id="status" aria-describedby="status-help" :options="options" :state="checkEditState" required v-model="edit_form.status"/>
         <b-form-text id="status-help">
           Select status in the upper area. 
         </b-form-text>
@@ -72,25 +72,25 @@
       </div>
       <form @submit.stop.prevent="addSchedule">
         <label for="select-event">Event Name</label>
-        <b-form-select id="select-event" aria-describedby="event-help" :options="e_options" required v-model="schedule.concert"/>
+        <b-form-select id="select-event" aria-describedby="event-help" :options="e_options" :state="checkSchName" required v-model="schedule.concert"/>
         <b-form-text id="event-help">
           コンサート名を選択する
         </b-form-text>
 
         <label for="date">Date</label>
-        <b-form-input class="text-center" id="date" :type="`date`" aria-describedby="date-help" required v-model="schedule.date"></b-form-input>
+        <b-form-input class="text-center" id="date" :type="`date`" aria-describedby="date-help" :state="checkSchDate" required v-model="schedule.date"></b-form-input>
         <b-form-text id="date-help">
           Enter the event date in the upper area. 
         </b-form-text>
 
         <label for="time">Time</label>
-        <b-form-input class="text-center" id="time" :type="`time`" aria-describedby="time-help" required v-model="schedule.time"></b-form-input>
+        <b-form-input class="text-center" id="time" :type="`time`" aria-describedby="time-help" :state="checkSchTime" required v-model="schedule.time"></b-form-input>
         <b-form-text id="time-help">
           Enter the event time in the upper area. 
         </b-form-text>
         
         <label for="place">Place</label>
-        <b-input id="place" aria-describedby="place-help" required v-model="schedule.place"/>
+        <b-input id="place" aria-describedby="place-help" :state="checkSchPlace" required v-model="schedule.place"/>
         <b-form-text id="place-help">
           Enter the event place in the upper area. 
         </b-form-text>
@@ -108,7 +108,7 @@
       </div>
       <form @submit.stop.prevent="addOk">
         <label for="event-name">Name</label>
-        <b-form-input id="event-name" aria-describedby="event-name-help" v-model="event.name"/>
+        <b-form-input id="event-name" aria-describedby="event-name-help" :state="checkEventName" v-model="event.name"/>
         <b-form-text id="event-name-help">
           Input name of new event, and push following button. 
         </b-form-text>
@@ -165,6 +165,35 @@
       }
     },
     props: ['member_id'],
+    computed: {
+      checkEventName(){
+        return /\S/g.exec(this.event.name)? false: true
+      },
+      checkSchPlace(){
+        return /\S/g.exec(this.schedule.place)? false: true
+      },
+      checkSchTime(){
+        return /\S/g.exec(this.schedule.time)? false: true
+      },
+      checkSchDate(){
+        return /\S/g.exec(this.schedule.date)? false: true
+      },
+      checkEditPlace(){
+        return /\S/g.exec(this.edit_form.place)? false: true
+      },
+      checkEditTime(){
+        return /\S/g.exec(this.edit_form.time)? false: true
+      },
+      checkEditDate(){
+        return /\S/g.exec(this.edit_form.date)? false: true
+      },
+      checkEditState(){
+        return /\S/g.exec(this.edit_form.state)? false: true
+      },
+      checkEditNumber(){
+        return /\S/g.exec(this.schedule.number)? false: true
+      }
+    },
     methods: {
       selectEvt: function(concert, str){
         this.event = concert

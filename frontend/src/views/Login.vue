@@ -8,7 +8,16 @@
           <label for="name">UserName:</label>
         </b-col>
         <b-col sm="7">
-          <b-form-input id="name" type="text" v-model="user.username"/>
+          <b-form-input
+            id="name" 
+            type="text"
+            :state="userNameValidate"
+            v-model="user.username"
+            aria-describedby="input-validate"
+          />
+          <b-form-invalid-feedback id="input-validate">
+            ユーザー名が入力されていません
+          </b-form-invalid-feedback>
         </b-col>
         <b-col sm="1"></b-col>
       </b-row>
@@ -43,6 +52,11 @@ export default {
         username: '',
         password: ''
       }
+    }
+  },
+  computed: {
+    userNameValidate() {
+      return /\S/g.exec(this.username)? false: true
     }
   },
   methods: {
