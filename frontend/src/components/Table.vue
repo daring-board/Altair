@@ -27,7 +27,12 @@
       </div>
       <form @submit.stop.prevent="submit">
         <label for="member-name">Name</label>
-        <b-form-input id="member-name" aria-describedby="member-name-help" required v-model="member['name']"/>
+        <b-form-input id="member-name" 
+          aria-describedby="member-name-help"
+          required
+          v-model="member['name']"
+          :state="checkName"
+          />
         <b-form-text id="member-name-help">
           Input name of new member, and push following button. 
         </b-form-text>
@@ -57,6 +62,11 @@
         },
         title_str: '新規追加'
       }
+    },
+    computed: {
+      checkName(){
+        return /\S/g.exec(this.member['name'])? true: false
+      },
     },
     methods: {
       changeTitle(str){
