@@ -144,26 +144,26 @@
           {value: 'Winning', text: 'Winning'},
           {value: 'Done', text: 'Done'},
         ],
-        e_options: [{text: 'Select Event', value: null },],
+        e_options: [],
         members: null,
         concerts: null,
         schedules: null,
         event: {
-          name: null,
+          name: '',
         },
         event_modal_title: 'イベント追加',
         schedule: {
-          concert: null,
-          date: null,
-          time: null,
-          place: null,
+          concert: '',
+          date: '',
+          time: '',
+          place: '',
         },
         edit_form: {
-          date: null,
-          time: null,
-          place: null,
+          date: '',
+          time: '',
+          place: '',
           num: 0,
-          status: null,
+          status: '',
           ticket_id: 0,
           schedule_id: 0,
         }
@@ -426,12 +426,12 @@
       },
       cancelEventModal(){
         event = {name: null}
-        this.e_options = [{text: 'Select Event', value: null },]
+        this.e_options = []
         this.getConcerts()
       },
       cancelModel(){
         event = {name: null}
-        this.e_options = [{text: 'Select Event', value: null },]
+        this.e_options = []
         this.getSchedules()
       }
     },
