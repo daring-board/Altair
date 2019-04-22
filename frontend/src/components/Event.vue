@@ -205,7 +205,7 @@
         return /\S/g.exec(this.edit_form.state)? true: false
       },
       checkEditNumber(){
-        return this.schedule.number.length < 2? true: false
+        return this.edit_form.num.length < 6? true: false
       }
     },
     methods: {
@@ -243,7 +243,7 @@
           alert('Please enter place')
         } else if(!/\S/g.exec(this.edit_form.num)){
           alert('Please enter number of ticket')
-        } else if(this.schedule.number.length > 2){
+        } else if(this.edit_form.num > 5){
           alert('枚数が大きすぎます。')
         } else if(!/\S/g.exec(this.edit_form.status)){
           alert('Please select status')
