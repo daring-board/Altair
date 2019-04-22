@@ -426,10 +426,12 @@
       },
       cancelEventModal(){
         event = {name: null}
+        this.e_options = [{text: 'Select Event', value: null },]
         this.getConcerts()
       },
       cancelModel(){
         event = {name: null}
+        this.e_options = [{text: 'Select Event', value: null },]
         this.getSchedules()
       }
     },
