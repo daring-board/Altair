@@ -205,7 +205,10 @@
         return /\S/g.exec(this.edit_form.state)? true: false
       },
       checkEditNumber(){
-        if(this.schedule.number > 5){
+        if(Number(this.schedule.number) > 5){
+          return false
+        }
+        if(Number(this.schedule.number) < 0){
           return false
         }
         return /\S/g.exec(this.schedule.number)? true: false
