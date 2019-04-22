@@ -109,7 +109,7 @@
         if (!/\S/g.exec(this.member['name'])) {
           alert('Please enter your name')
         } if(this.member['name'].length > 50){
-          alert('場所名が長すぎます')
+          alert('場所名が長すぎます。50字以内にして下さい！！')
         } else {
           this.submit()
         }

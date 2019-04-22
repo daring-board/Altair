@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button variant="primary" style="float: right" v-b-modal.add-event @click="changeEvtTitle('イベント追加')"><b-badge variant="light">+</b-badge></b-button>
+    <b-button variant="primary" style="float: right; padding: 10px;" v-b-modal.add-event @click="changeEvtTitle('イベント追加')"><b-badge variant="light">+</b-badge></b-button>
     <div v-for="concert in concerts" v-bind:key="concert.id">
       <div>
         <h3 style='text-align: left; margin-left: 10px; float: left'>{{concert.name}}</h3>
@@ -249,7 +249,7 @@
         } else if(!/\S/g.exec(this.edit_form.status)){
           alert('Please select status')
         } else if(this.edit_form.place.length > 50){
-          alert('場所名が長すぎます')
+          alert('場所名が長すぎます。50字以内にして下さい！！')
         } else {
           this.saveForm()
         }
@@ -262,7 +262,7 @@
         if (!/\S/g.exec(this.event.name)) {
           alert('Please enter your name')
         } else if(this.event.name.length > 50){
-          alert('イベント名称が長すぎます')
+          alert('場所名が長すぎます。50字以内にして下さい！！')
         } else {
           this.submit()
         }
@@ -281,7 +281,7 @@
         } else if(!/\S/g.exec(this.schedule.place)) {
           alert('Please enter place')
         } else if(this.schedule.place.length > 50){
-          alert('場所名が長すぎます')
+          alert('場所名が長すぎます。50字以内にして下さい！！')
         } else{
           this.submitSchedule()
         }
