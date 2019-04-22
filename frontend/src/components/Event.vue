@@ -172,9 +172,15 @@
     props: ['member_id'],
     computed: {
       checkEventName(){
+        if(this.event.name.length > 50){
+          return false
+        }
         return /\S/g.exec(this.event.name)? true: false
       },
       checkSchPlace(){
+        if(this.event.name.length > 50){
+          return false
+        }
         return /\S/g.exec(this.schedule.place)? true: false
       },
       checkSchTime(){
@@ -184,6 +190,9 @@
         return /\S/g.exec(this.schedule.date)? true: false
       },
       checkEditPlace(){
+        if(this.event.name.length > 50){
+          return false
+        }
         return /\S/g.exec(this.edit_form.place)? true: false
       },
       checkEditTime(){
@@ -196,6 +205,9 @@
         return /\S/g.exec(this.edit_form.state)? true: false
       },
       checkEditNumber(){
+        if(this.schedule.number > 5){
+          return false
+        }
         return /\S/g.exec(this.schedule.number)? true: false
       }
     },
@@ -236,6 +248,8 @@
           alert('Please enter number of ticket')
         } else if(!/\S/g.exec(this.edit_form.status)){
           alert('Please select status')
+        } else if(this.edit_form.place.length > 50){
+          alert('場所名が長すぎます')
         } else {
           this.saveForm()
         }
@@ -247,6 +261,8 @@
         console.log(this.event)
         if (!/\S/g.exec(this.event.name)) {
           alert('Please enter your name')
+        } else if(this.event.name.length > 50){
+          alert('イベント名称が長すぎます')
         } else {
           this.submit()
         }
@@ -264,7 +280,9 @@
           alert('Please enter time')
         } else if(!/\S/g.exec(this.schedule.place)) {
           alert('Please enter place')
-        }else{
+        } else if(this.schedule.place.length > 50){
+          alert('場所名が長すぎます')
+        } else{
           this.submitSchedule()
         }
       },

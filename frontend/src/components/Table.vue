@@ -66,6 +66,9 @@
     },
     computed: {
       checkName(){
+        if(this.member['name'].length > 50){
+          return false
+        }
         return /\S/g.exec(this.member['name'])? true: false
       },
     },
@@ -105,6 +108,8 @@
         console.log(this.member)
         if (!/\S/g.exec(this.member['name'])) {
           alert('Please enter your name')
+        } if(this.member['name'].length > 50){
+          alert('場所名が長すぎます')
         } else {
           this.submit()
         }
