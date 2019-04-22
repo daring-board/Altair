@@ -281,6 +281,9 @@
               })
               if(!this.schedules[concert.id]){
                 this.schedules[concert.id] = []
+                this.schedules[concert.id].push({
+                  'edit': 'Add',
+                })
               }
               if(!('edit' in this.schedules[concert.id].slice(-1)[0])){
                 this.schedules[concert.id].push({
