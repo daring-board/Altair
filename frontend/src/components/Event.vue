@@ -205,7 +205,7 @@
         return /\S/g.exec(this.edit_form.state)? true: false
       },
       checkEditNumber(){
-        return this.edit_form.num.length < 6? true: false
+        return this.edit_form.num < 6? true: false
       }
     },
     methods: {
