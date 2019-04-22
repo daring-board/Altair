@@ -205,13 +205,7 @@
         return /\S/g.exec(this.edit_form.state)? true: false
       },
       checkEditNumber(){
-        if(Number(this.schedule.number) > 5){
-          return false
-        }
-        if(Number(this.schedule.number) < 0){
-          return false
-        }
-        return /\S/g.exec(this.schedule.number)? true: false
+        return this.schedule.number.length < 2? true: false
       }
     },
     methods: {
@@ -240,7 +234,7 @@
         // Prevent modal from closing
         evt.preventDefault()
         /* eslint-disable */
-        console.log(this.edit_form.date)
+        console.log(this.edit_form.num)
         if (!/\S/g.exec(this.edit_form.date)) {
           alert('Please select date')
         } else if(!/\S/g.exec(this.edit_form.time)){
@@ -249,6 +243,8 @@
           alert('Please enter place')
         } else if(!/\S/g.exec(this.edit_form.num)){
           alert('Please enter number of ticket')
+        } else if(this.schedule.number.length > 2){
+          alert('枚数が大きすぎます。')
         } else if(!/\S/g.exec(this.edit_form.status)){
           alert('Please select status')
         } else if(this.edit_form.place.length > 50){
