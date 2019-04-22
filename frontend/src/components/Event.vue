@@ -53,7 +53,7 @@
         </b-form-text>
 
         <label for="num">Number of Ticket</label>
-        <b-input id="num" aria-describedby="num-help" :type="`number`" :state="checkEditNumber" required v-model="edit_form.num"/>
+        <b-input id="num" aria-describedby="num-help" :type="`number`" min="0" max="5" :state="checkEditNumber" required v-model="edit_form.num"/>
         <b-form-text id="num-help">
           Enter the Number of Ticket in the upper area. 
         </b-form-text>
@@ -205,6 +205,9 @@
         return /\S/g.exec(this.edit_form.state)? true: false
       },
       checkEditNumber(){
+        if(this.edit_form.num < 0){
+          return false
+        }
         return this.edit_form.num < 6? true: false
       }
     },
@@ -245,6 +248,8 @@
           alert('Please enter number of ticket')
         } else if(this.edit_form.num > 5){
           alert('枚数が大きすぎます。')
+        } else if(this.edit_form.num < 0){
+          alert('枚数が負の値です。')
         } else if(!/\S/g.exec(this.edit_form.status)){
           alert('Please select status')
         } else if(this.edit_form.place.length > 50){
