@@ -343,7 +343,7 @@
                 if(tmp_obj.status == 'Winning'){
                   obj.winning = tmp_obj.modified
                 }else{
-                  obj.winning = null
+                  obj.winning = ''
                 }
                 path = this.$baseURL + `regist_member`
                 /* eslint-disable */
@@ -381,10 +381,10 @@
             /* eslint-disable */
             console.log(response.data)
             this.schedule = {
-              event: null,
-              date: null,
-              time: null,
-              place: null,
+              event: '',
+              date: '',
+              time: '',
+              place: '',
             }
             this.registTicket(response.data)
             this.getSchedules()
@@ -425,12 +425,12 @@
         })
       },
       cancelEventModal(){
-        event = {name: null}
+        event = {name: ''}
         this.e_options = []
         this.getConcerts()
       },
       cancelModel(){
-        event = {name: null}
+        event = {name: ''}
         this.e_options = []
         this.getSchedules()
       }
