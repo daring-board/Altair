@@ -70,6 +70,15 @@ def member(id):
     member = Members.query.filter_by(id=id, user_id=user.id).first()
     return jsonify(get_model_dict(member))
 
+@app.route('/api/del_member/<id>')
+@jwt_required()
+def del_member(id):
+    user = current_identity
+    member = Members.query.filter_by(id=id, user_id=user.id).first()
+    db.session.delete(member)
+    db.session.commit()
+    return jsonify(get_model_dict(member))
+
 @app.route('/api/regist_member', methods=["POST"])
 @jwt_required()
 def regist_member():
@@ -109,6 +118,15 @@ def concert(id):
     concert = Concerts.query.filter_by(id=id, user_id=user.id).first()
     return jsonify(get_model_dict(concert))
 
+@app.route('/api/del_concert/<id>')
+@jwt_required()
+def del_concert(id):
+    user = current_identity
+    concert = Concerts.query.filter_by(id=id, user_id=user.id).first()
+    db.session.delete(concert)
+    db.session.commit()
+    return jsonify(get_model_dict(concert))
+
 @app.route('/api/regist_concert', methods=["POST"])
 @jwt_required()
 def regist_concert():
@@ -136,6 +154,15 @@ def schedules():
     schedules = Schedules.query.all()
     schedules = [get_model_dict(schedule) for schedule in schedules]
     return jsonify(schedules)
+
+@app.route('/api/del_schedule/<id>')
+@jwt_required()
+def del_schedule(id):
+    user = current_identity
+    schedule = Schedules.query.filter_by(id=id, user_id=user.id).first()
+    db.session.delete(schedule)
+    db.session.commit()
+    return jsonify(get_model_dict(schedule))
 
 @app.route('/api/dict_schedules/<member_id>')
 @jwt_required()
@@ -220,6 +247,15 @@ def ticket():
         else:
             ret[schedule_id] = [obj]
     return jsonify(ret)
+
+@app.route('/api/del_ticket/<id>')
+@jwt_required()
+def del_ticket(id):
+    user = current_identity
+    ticket = Ticket.query.filter_by(id=id, user_id=user.id).first()
+    db.session.delete(ticket)
+    db.session.commit()
+    return jsonify(get_model_dict(ticket))
 
 @app.route('/api/regist_ticket', methods=["POST"])
 @jwt_required()

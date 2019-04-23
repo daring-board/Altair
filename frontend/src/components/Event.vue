@@ -243,6 +243,14 @@
         /* eslint-disable */
         console.log('delete:')
         console.log(this.edit_form.ticket_id)
+        const path = this.$baseURL + `del_ticket/` + this.edit_form.ticket_id
+        axios.get(path,
+          {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
+          .then(response => {
+            /* eslint-disable */
+            console.log('del ticket')
+            console.log(response.data)
+        })
       },
       selectEvt: function(concert, str){
         this.event = concert

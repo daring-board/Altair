@@ -105,6 +105,14 @@
         /* eslint-disable */
         console.log('delete:')
         console.log(this.member.id)
+        const path = this.$baseURL + `del_member/` + this.member.id
+        axios.get(path,
+          {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
+          .then(response => {
+            /* eslint-disable */
+            console.log('del member')
+            console.log(response.data)
+        })
       },
       selectMember(data, title){
         this.changeTitle(title)
