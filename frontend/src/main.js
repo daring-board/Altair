@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
 import BootstrapVue from 'bootstrap-vue'
+import { Modal } from 'bootstrap-vue/es/components'
 
 Vue.prototype.$baseURL = 'http://localhost:5000/api/'
 Vue.use(BootstrapVue)
+Vue.use(Modal)
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
