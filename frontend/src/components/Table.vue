@@ -112,6 +112,12 @@
             /* eslint-disable */
             console.log('del member')
             console.log(response.data)
+            this.member = {
+              'name': '',
+              'application': '',
+              'winning': '',
+              'edit': '',
+            }
             this.getMembers()
         })
       },
@@ -163,6 +169,8 @@
       },
       submit() {
         const path = this.$baseURL + `regist_member`
+        /* eslint-disable */
+        console.log(this.member)
         axios.post(path, {'member': this.member}, 
           {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
           .then(response => {
