@@ -17,14 +17,22 @@
         </div>
       </template>
       <template slot="row-detals" slot-scope="data">
-        <div class="b-label">編集：</div>
-          <b-button v-b-modal.add-modal @click="selectMember(data.item, '編集')">
-            <i class="fas fa-edit"></i>
-          </b-button>
-          <div class="b-label">削除：</div>
-          <b-button>
-            <i class="fas fa-trash"></i>
-          </b-button>
+        <b-container>
+            <b-row>
+              <b-col>
+                編集
+                <b-button v-b-modal.add-modal @click="selectMember(data.item, '編集')">
+                  <i class="fas fa-edit"></i>
+                </b-button>
+              </b-col>
+              <b-col>
+                削除：
+                <b-button>
+                  <i class="fas fa-trash"></i>
+                </b-button>
+              </b-col>
+            </b-row>
+        </b-container>
       </template>
     </b-table>
     <b-modal
