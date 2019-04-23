@@ -34,9 +34,16 @@
               </b-col>
               <b-col>
                 削除：
-                <b-button @click="deleteTicket(data.item)">
+                <b-button v-b-modal.confirm-modal @click="setObj(data.item)">
                   <i class="fas fa-trash"></i>
                 </b-button>
+                <!-- The modal -->
+                <b-modal 
+                  id="confirm-modal"
+                  @ok="deleteMember"
+                >
+                  Are you sure?
+                </b-modal>
               </b-col>
             </b-row>
           </b-container>
@@ -232,20 +239,10 @@
       }
     },
     methods: {
-      deleteTicket(data){
+      deleteTicket(){
         /* eslint-disable */
-        console.log(data.id)
-        this.$bvModal.msgBoxConfirm('Are you sure?')
-          .then(value => {
-            if(value){
-              console.log(value)
-            }else{
-              console.log(value)
-            }
-          })
-          .catch(err => {
-            // An error occurred
-          })
+        console.log('delete:')
+        console.log(this.edit_form.ticket_id)
       },
       selectEvt: function(concert, str){
         this.event = concert
