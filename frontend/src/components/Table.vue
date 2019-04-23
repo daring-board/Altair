@@ -16,12 +16,12 @@
           </b-button>
         </div>
       </template>
-      <template slot="toggle-detals" slot-scope="data">
-        <p class="b-label">編集：</p>
+      <template slot="row-detals" slot-scope="data">
+        <div class="b-label">編集：</div>
           <b-button v-b-modal.add-modal @click="selectMember(data.item, '編集')">
             <i class="fas fa-edit"></i>
           </b-button>
-          <p class="b-label">削除：</p>
+          <div class="b-label">削除：</div>
           <b-button>
             <i class="fas fa-trash"></i>
           </b-button>

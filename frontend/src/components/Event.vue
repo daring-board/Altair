@@ -24,11 +24,11 @@
           </div>
         </template>
         <template slot="row-details" slot-scope="data">
-          <p class="b-label">編集：</p>
+          <div class="b-label">編集：</div>
           <b-button v-b-modal.edit-modal @click="setObj(data.item)">
             <i class="fas fa-edit"></i>
           </b-button>
-          <p class="b-label">削除：</p>
+          <div class="b-label">削除：</div>
           <b-button>
             <i class="fas fa-trash"></i>
           </b-button>
