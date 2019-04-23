@@ -16,18 +16,18 @@
           </b-button>
         </div>
       </template>
-      <template slot="row-detals" slot-scope="data">
+      <template slot="row-details" slot-scope="data">
         <b-container>
             <b-row>
               <b-col>
-                編集
+                編集：
                 <b-button v-b-modal.add-modal @click="selectMember(data.item, '編集')">
                   <i class="fas fa-edit"></i>
                 </b-button>
               </b-col>
               <b-col>
                 削除：
-                <b-button>
+                <b-button @click="deleteMember(data.item)">
                   <i class="fas fa-trash"></i>
                 </b-button>
               </b-col>
@@ -93,6 +93,21 @@
     methods: {
       changeTitle(str){
         this.title_str = str
+      },
+      deleteMember(data){
+        /* eslint-disable */
+        console.log(data.id)
+        this.$bvModal.msgBoxConfirm('Are you sure?')
+          .then(value => {
+            if(value){
+              console.log(value)
+            }else{
+              console.log(value)
+            }
+          })
+          .catch(err => {
+            // An error occurred
+          })
       },
       selectMember(data, title){
         this.changeTitle(title)

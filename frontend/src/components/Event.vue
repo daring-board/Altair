@@ -34,7 +34,7 @@
               </b-col>
               <b-col>
                 削除：
-                <b-button>
+                <b-button @click="deleteTicket(data.item)">
                   <i class="fas fa-trash"></i>
                 </b-button>
               </b-col>
@@ -191,6 +191,21 @@
     },
     props: ['member_id'],
     computed: {
+      deleteTicket(data){
+        /* eslint-disable */
+        console.log(data.id)
+        this.$bvModal.msgBoxConfirm('Are you sure?')
+          .then(value => {
+            if(value){
+              console.log(value)
+            }else{
+              console.log(value)
+            }
+          })
+          .catch(err => {
+            // An error occurred
+          })
+      },
       checkEventName(){
         if(this.event.name.length > 50){
           return false
