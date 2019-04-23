@@ -253,7 +253,7 @@ def ticket():
 @jwt_required()
 def del_ticket(id):
     user = current_identity
-    ticket = Ticket.query.filter_by(id=id, user_id=user.id).first()
+    ticket = Tickets.query.filter_by(id=id, user_id=user.id).first()
     db.session.delete(ticket)
     db.session.commit()
     return jsonify(get_model_dict(ticket))
