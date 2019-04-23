@@ -11,10 +11,20 @@
           </b-button>
         </div>
         <div v-else>
-          <b-button v-b-modal.add-modal @click="selectMember(data.item, '変更')">
-            <i class="fas fa-edit"></i>
+          <b-button @click="data.toggleDetails">
+            <i class="fas fa-caret-down"></i>
           </b-button>
         </div>
+      </template>
+      <template slot="toggle-detals" slot-scope="data">
+        <p class="b-label">編集：</p>
+          <b-button v-b-modal.add-modal @click="selectMember(data.item, '編集')">
+            <i class="fas fa-edit"></i>
+          </b-button>
+          <p class="b-label">削除：</p>
+          <b-button>
+            <i class="fas fa-trash"></i>
+          </b-button>
       </template>
     </b-table>
     <b-modal

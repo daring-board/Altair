@@ -13,7 +13,7 @@
       <b-table striped hover :items="schedules[concert.id]" :fields="fields">
         <template slot="edit" slot-scope="data">
           <div v-if="data.item.edit != 'Add'">
-            <b-button @click="row.toggleDetails">
+            <b-button @click="data.toggleDetails">
               <i class="fas fa-caret-down"></i>
             </b-button>
           </div>
@@ -23,10 +23,12 @@
             </b-button>
           </div>
         </template>
-        <template slot="row-detail" slot-scope="data">
+        <template slot="row-details" slot-scope="data">
+          <p class="b-label">編集：</p>
           <b-button v-b-modal.edit-modal @click="setObj(data.item)">
             <i class="fas fa-edit"></i>
           </b-button>
+          <p class="b-label">削除：</p>
           <b-button>
             <i class="fas fa-trash"></i>
           </b-button>
@@ -146,7 +148,7 @@
             formatter: value => {return (value != null)? `${value}枚`: ''}
           },
           {key: 'status', label: '状態'},
-          {key: 'edit', label: '編集'},
+          {key: 'edit', label: '操作'},
         ],
         options: [
           {value: 'Not Applyed', text: 'Not Applyed'},
@@ -483,5 +485,8 @@
 .edit-title {
   margin-left: 10px;
   float: left;
+}
+.b-label{
+  margin: 10px;
 }
 </style>
