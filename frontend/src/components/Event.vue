@@ -40,7 +40,7 @@
                 <!-- The modal -->
                 <b-modal 
                   id="confirm-modal"
-                  @ok="deleteMember"
+                  @ok="deleteTicket"
                 >
                   Are you sure?
                 </b-modal>

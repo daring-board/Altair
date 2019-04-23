@@ -75,6 +75,7 @@ def member(id):
 def del_member(id):
     user = current_identity
     member = Members.query.filter_by(id=id, user_id=user.id).first()
+    Tickets.query.filter_by(member_id=id).delete()
     db.session.delete(member)
     db.session.commit()
     return jsonify(get_model_dict(member))
