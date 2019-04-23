@@ -1,6 +1,8 @@
 <template>
   <div>
-    <b-button variant="primary" style="float: right; padding: 10px;" v-b-modal.add-event @click="changeEvtTitle('イベント追加')"><b-badge variant="light">+</b-badge></b-button>
+    <b-button variant="primary" style="float: right; padding: 10px;" v-b-modal.add-event @click="changeEvtTitle('イベント追加')">
+      <b-badge variant="light">+</b-badge>
+    </b-button>
     <div v-for="concert in concerts" v-bind:key="concert.id">
       <div>
         <h3 style='text-align: left; margin-left: 10px; float: left'>{{concert.name}}</h3>
@@ -11,15 +13,23 @@
       <b-table striped hover :items="schedules[concert.id]" :fields="fields">
         <template slot="edit" slot-scope="data">
           <div v-if="data.item.edit != 'Add'">
-            <b-button v-b-modal.edit-modal @click="setObj(data.item)">
-              <i class="fas fa-edit"></i>
+            <b-button @click="row.toggleDetails">
+              <i class="fas fa-caret-down"></i>
             </b-button>
           </div>
           <div v-else>
-            <b-button style="margin-bottom:15px;" v-b-modal.add-schedule @click="schedule.concert = concert">
+            <b-button style="margin-bottom: 15px;" v-b-modal.add-schedule @click="schedule.concert = concert">
               <i class="fas fa-plus"></i>
             </b-button>
           </div>
+        </template>
+        <template slot="row-detail" slot-scope="data">
+          <b-button v-b-modal.edit-modal @click="setObj(data.item)">
+            <i class="fas fa-edit"></i>
+          </b-button>
+          <b-button>
+            <i class="fas fa-trash"></i>
+          </b-button>
         </template>
       </b-table>
     </div>
