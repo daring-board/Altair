@@ -191,21 +191,6 @@
     },
     props: ['member_id'],
     computed: {
-      deleteTicket(data){
-        /* eslint-disable */
-        console.log(data.id)
-        this.$bvModal.msgBoxConfirm('Are you sure?')
-          .then(value => {
-            if(value){
-              console.log(value)
-            }else{
-              console.log(value)
-            }
-          })
-          .catch(err => {
-            // An error occurred
-          })
-      },
       checkEventName(){
         if(this.event.name.length > 50){
           return false
@@ -247,6 +232,21 @@
       }
     },
     methods: {
+      deleteTicket(data){
+        /* eslint-disable */
+        console.log(data.id)
+        this.$bvModal.msgBoxConfirm('Are you sure?')
+          .then(value => {
+            if(value){
+              console.log(value)
+            }else{
+              console.log(value)
+            }
+          })
+          .catch(err => {
+            // An error occurred
+          })
+      },
       selectEvt: function(concert, str){
         this.event = concert
         this.changeEvtTitle(str)
