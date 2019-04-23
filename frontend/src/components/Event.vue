@@ -250,6 +250,9 @@
             /* eslint-disable */
             console.log('del ticket')
             console.log(response.data)
+            event = {name: ''}
+            this.e_options = []
+            this.getSchedules()
         })
       },
       selectEvt: function(concert, str){

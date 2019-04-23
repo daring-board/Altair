@@ -112,6 +112,7 @@
             /* eslint-disable */
             console.log('del member')
             console.log(response.data)
+            this.getMembers()
         })
       },
       selectMember(data, title){
