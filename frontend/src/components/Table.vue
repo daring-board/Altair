@@ -112,12 +112,7 @@
             /* eslint-disable */
             console.log('del member')
             console.log(response.data)
-            this.member = {
-              'name': '',
-              'application': '',
-              'winning': '',
-              'edit': '',
-            }
+            this.clearName()
             this.getMembers()
         })
       },
@@ -174,6 +169,7 @@
         axios.post(path, {'member': this.member}, 
           {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
           .then(response => {
+            this.clearName()
             this.getMembers()
             this.$nextTick(() => {
               // Wrapped in $nextTick to ensure DOM is rendered before closing
