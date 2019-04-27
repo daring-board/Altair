@@ -110,6 +110,7 @@ def concerts():
     user = current_identity
     concerts = Concerts.query.filter_by(user_id=user.id).all()
     concerts = [get_model_dict(concert) for concert in concerts]
+    concerts = sorted(concerts, key=lambda x:x['id'], reverse=True)
     return jsonify(concerts)
 
 @app.route('/api/concert/<id>')
