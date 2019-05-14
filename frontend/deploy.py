@@ -1,4 +1,4 @@
-dist_path = 'frontend/dist/'
+dist_path = './dist/'
 index_file = 'index.html'
 
 text = open(dist_path + index_file, 'r', encoding='utf8').read()
