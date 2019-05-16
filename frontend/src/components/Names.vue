@@ -54,8 +54,9 @@
       <div slot="modal-header">
         {{modal_label.header}}
       </div>
-      <form @submit.stop.prevent="addOk">
-        <label for="apply-name">名義</label>
+
+      <form @submit.stop.prevent="addOk" style="align: left">
+        <label for="apply-name">名義人</label>
         <b-form-input
           id="apply-name" 
           aria-describedby="apply-name-help"
@@ -64,10 +65,66 @@
           required
         />
         <b-form-text id="apply-name-help">
-          {{modal_label.help}}
+          {{modal_label.name_help}}
         </b-form-text>
         <b-form-invalid-feedback :state="validation"></b-form-invalid-feedback>
         <b-form-valid-feedback :state="validation"></b-form-valid-feedback>
+
+        <label for="date">Date</label>
+        <b-form-input
+          class="text-center"
+          id="date"
+          :type="`date`"
+          aria-describedby="date-help"
+          required
+        />
+        <b-form-text id="date-help">
+          {{modal_label.date_help}}
+        </b-form-text>
+
+        <label for="time">Time</label>
+        <b-form-input
+          class="text-center"
+          id="time"
+          :type="`time`"
+          aria-describedby="time-help"
+          required
+        />
+        <b-form-text id="time-help">
+          {{modal_label.time_help}}
+        </b-form-text>
+
+        <label for="place">会場</label>
+        <b-input
+          id="place"
+          aria-describedby="place-help"
+          required
+        />
+        <b-form-text id="place-help">
+          {{modal_label.place_help}}
+        </b-form-text>
+
+        <label for="num">枚数</label>
+        <b-form-input
+          class="text-center"
+          id="num"
+          :type="`number`"
+          aria-describedby="num-help"
+          required
+        />
+        <b-form-text id="num-help">
+          {{modal_label.num_help}}
+        </b-form-text>
+
+        <label for="remark">備考</label>
+        <b-form-textarea
+          id="remark"
+          aria-describedby="remark-help"
+        />
+        <b-form-text id="remark-help">
+          {{modal_label.remark_help}} 
+        </b-form-text>
+
       </form>
     </b-modal>
   </div>
@@ -152,15 +209,25 @@ export default {
       if(attr == 'edit'){
         this.modal_label = {
           header: '申込情報変更',
-          help: '申込情報入力してください'
-        }
+          name_help: '',
+          date_help: '',
+          time_help: '',
+          place_help: '',
+          num_help: '',
+          remark_help: '備考の入力はオプションです'
+      }
         /* eslint-disable */
         console.log(item)
         this.member = item
       }else{
         this.modal_label = {
           header: '申込追加',
-          help: '申込を行う名義を入力してください'
+          name_help: '',
+          date_help: '',
+          time_help: '', 
+          place_help: '',
+          num_help: '',
+          remark_help: '備考の入力はオプションです'
         }
       }
     }
