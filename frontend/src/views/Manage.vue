@@ -1,34 +1,34 @@
 <template>
   <div class="manage">
-    <h2 style="margin-top: 10px">{{ member.name }}</h2>
-    <Event :member_id='id'/>
+    <h2 style="margin-top: 10px">{{ concert.name }}</h2>
+    <Names/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Event from '@/components/Event.vue'
+import Names from '@/components/Names.vue'
 import axios from 'axios'
 
 export default {
   name: 'manage',
   components: {
-    Event
+    Names
   },
   data: function() {
     return {
-      member: {'name': 'No name'},
+      concert: {'name': ''},
     }
   },
   props: ['id'],
   mounted: function() {
-    const path = this.$baseURL + `member/` + this.id
+    const path = this.$baseURL + `concert/` + this.id
     axios.get(path,
       {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
       .then(response => {
-        this.member = response.data
+        this.concert = response.data
         /* eslint-disable */
-        console.log(this.member)
+        console.log(this.concert)
     })
   }
 }
