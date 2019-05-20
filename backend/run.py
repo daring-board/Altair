@@ -280,21 +280,44 @@ def regist_ticket():
     ticket = jsonify(get_model_dict(ticket))
     return ticket
 
-@app.route('/api/save_ticket', methods=["POST"])
+@app.route('/api/tickets/<concert_id>', methods=['GET'])
 @jwt_required()
-def save_ticket():
-    print(request.data.decode('utf-8'))
-    data = request.data.decode('utf-8')
-    ticket = json.loads(data)['ticket']
-    print('update')
-    obj = Tickets.query.get(ticket['id'])
-    obj.number = ticket['num']
-    obj.status = ticket['status']
-    obj.modified = datetime.now()
-    db.session.commit()
-    ticket = jsonify(get_model_dict(obj))
-    return ticket
+def tickets(concert_id):
+    schedules = Schedules.query.filter_by(concert_id=concert_id).all()
 
+    tickets = []
+    for schedule in schedules:
+        tickets.extend(Tickets.query.filter_by(schedule_id=schedule.id).all())
+    members = []
+    for ticket in tickets:
+        members.extend(Members.query.filter_by(id=ticket.member_id).all())
+    members = [get_model_dict(member) for member in members]
+    members = {member['id']: member['name'] for member in members}
+
+    tickets = [get_model_dict(ticket) for ticket in tickets]
+    schedules = {schedule.id: schedule for schedule in schedules}
+    ret = {}
+    for ticket in tickets:
+        schedule_id = ticket['schedule_id']
+        obj, info = {}, {}
+        obj['ID'] = ticket['id']
+        obj['member_id'] = ticket['member_id']
+        obj['name'] = members[ticket['member_id']]
+
+        info['datetime'] = schedules[ticket['schedule_id']].date.strftime('%Y/%m/%d')
+        info['datetime'] += ' %s'%schedules[ticket['schedule_id']].time.strftime('%H:%M')
+        info['place'] = schedules[ticket['schedule_id']].place
+        info['status'] = ticket['status']
+
+        obj['infos'] = [info]
+
+        if ticket['member_id'] in ret:
+            ret[obj['member_id']]['infos'].append(info)
+        else:
+            ret[obj['member_id']] = obj
+
+    ret = [ret[key] for key in ret.keys()]
+    return jsonify(ret)
 
 @app.errorhandler(404)
 def not_found(error):

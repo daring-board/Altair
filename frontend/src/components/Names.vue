@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2 style="margin-top: 10px">{{ concert.name }}</h2>
     <b-table striped hover :items="items" :fields="fields">
       <template slot="name" slot-scope="row">
         <router-link class="nav-link" :to="{}">{{row.item.name}}</router-link>
@@ -28,28 +29,37 @@
           </b-row>
           <b-row class="mb-2">
             <b-col>
+              {{row.item.infos[0]['datetime']}}
+            </b-col>
+            <b-col>
+              {{row.item.infos[0]['datetime']}}
+            </b-col>
+          </b-row>
+          <b-row class="mb-2">
+            <b-col>
               <b-button v-b-modal.add-modal @click="setModalAttribute('edit', row.item)">編集</b-button>
             </b-col>
             <b-col>
-              <b-button v-b-modal.confirm-modal>削除</b-button>
-              <!-- The modal -->
-              <b-modal 
-                id="confirm-modal"
-                @ok="delConcert(row.item.id)"
-              >
-                {{row.item.name}}を削除しますか？
-              </b-modal>
+              <b-button v-b-modal.confirm-modal @click="member=row.item">削除</b-button>
             </b-col>
           </b-row>
         </b-card>
       </template>
     </b-table>
+    <!-- The modal -->
+    <b-modal 
+      id="confirm-modal"
+      @ok="delMember(member.id)"
+      @cancel="initNewMember()"
+    >
+      {{member.name}}を削除しますか？
+    </b-modal>
     <b-modal
       id="add-modal"
       ref="modal"
       :ok-disabled="!validation"
       @ok="addOk"
-      @cancel="initNewEvent()"
+      @cancel="initNewMember()"
     >
       <div slot="modal-header">
         {{modal_label.header}}
@@ -138,13 +148,15 @@ export default {
       fields: {'name': '名前', 'detail': '詳細'},
       items: [],
       member: {},
-      modal_label: {}
+      modal_label: {},
+      concert: {}
     }
   },
+  props: ['concert_id'],
   created: function(){
-    this.getMembers()
     this.initNewMember()
     this.setModalAttribute('new', null)
+    this.getConcert()
   },
   computed: {
     validation(){
@@ -158,11 +170,24 @@ export default {
       }
       return /\S/g.exec(this.member.name)? true: false
     },
-    getMembers(){
-      const path = this.$baseURL + `members`
+    getConcert(){
+      const path = this.$baseURL + `concert/` + this.concert_id
+      axios.get(path,
+        {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
+        .then(response => {
+          this.concert = response.data
+          /* eslint-disable */
+          console.log(this.concert)
+          this.getTickets()
+      })
+    },
+    getTickets(){
+      const path = this.$baseURL + `tickets/` + this.concert.id
       axios.get(path, {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
         .then(response => {
           this.items = response.data
+          /* eslint-disable */
+          console.log(response.data)
           this.items.push({
             'name': '',
             'detail': 'Add',
@@ -172,12 +197,13 @@ export default {
         })
     },
     delMember(member_id){
-      const path = this.$baseURL + `del_concert/` + member_id
+      const path = this.$baseURL + `del_member/` + member_id
       axios.get(path, {headers: {'Authorization': 'JWT ' + this.$store.state.accessToken}})
         .then(response => {
           /* eslint-disable */
           console.log(response.data)
           this.getMembers()
+          this.initNewMember()
         })
     },
     addOk(evt){

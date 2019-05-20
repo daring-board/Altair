@@ -26,19 +26,20 @@
               <b-button v-b-modal.add-modal @click="setModalAttribute('edit', row.item)">編集</b-button>
             </b-col>
             <b-col>
-              <b-button v-b-modal.confirm-modal>削除</b-button>
-              <!-- The modal -->
-              <b-modal 
-                id="confirm-modal"
-                @ok="delConcert(row.item.id)"
-              >
-                {{row.item.name}}を削除しますか？
-              </b-modal>
+              <b-button v-b-modal.confirm-modal @click="event=row.item">削除</b-button>
             </b-col>
           </b-row>
         </b-card>
       </template>
     </b-table>
+    <!-- The modal -->
+    <b-modal 
+      id="confirm-modal"
+      @ok="delConcert(event.id)"
+      @cancel="initNewEvent()"
+    >
+      {{event.name}}を削除しますか？
+    </b-modal>
     <b-modal
       id="add-modal"
       ref="modal"
@@ -116,6 +117,7 @@ export default {
           /* eslint-disable */
           console.log(response.data)
           this.getConcerts()
+          this.initNewEvent()
         })
     },
     addOk(evt){
